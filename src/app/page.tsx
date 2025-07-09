@@ -1,103 +1,234 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import SearchBar from '@/components/SearchBar';
+import PropertyCard from '@/components/PropertyCard';
+import { getFeaturedProperties, searchProperties } from '@/data/properties';
+import { MessageCircle, Zap, Shield, ChevronDown } from 'lucide-react';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [searchResults, setSearchResults] = useState(getFeaturedProperties());
+  const [sortBy, setSortBy] = useState('newest');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const handleSearch = (query: string) => {
+    const results = searchProperties(query);
+    setSearchResults(results);
+  };
+
+  const handleSort = (value: string) => {
+    setSortBy(value);
+    // Implement sorting logic here if needed
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      {/* Hero Section */}
+      <section className="bg-white py-12 lg:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
+              Sell Your Property
+              <span className="block text-primary-500">Without Estate Agents</span>
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+              List and manage property sales independently, removing the need for traditional estate agents. 
+              Save thousands on commission fees.
+            </p>
+          </div>
+
+          {/* Search Bar */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <SearchBar 
+              onSearch={handleSearch}
+              placeholder="Search properties by location, type, or postcode..."
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Value Propositions */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Complete Faster */}
+            <div className="bg-gradient-to-r from-primary-500 to-primary-700 text-white p-8 rounded-lg text-center shadow-lg">
+              <div className="mb-4">
+                <Zap className="h-12 w-12 mx-auto" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Complete Faster</h3>
+              <p className="text-white/90">
+                Direct communication between buyers and sellers eliminates delays and speeds up the process
+              </p>
+            </div>
+
+            {/* Connect Directly */}
+            <div className="bg-gradient-to-r from-primary-500 to-primary-700 text-white p-8 rounded-lg text-center shadow-lg">
+              <div className="mb-4">
+                <MessageCircle className="h-12 w-12 mx-auto" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Connect Directly</h3>
+              <p className="text-white/90">
+                Message buyers instantly without waiting for agent intermediaries to pass information along
+              </p>
+            </div>
+
+            {/* You're in Charge */}
+            <div className="bg-gradient-to-r from-primary-500 to-primary-700 text-white p-8 rounded-lg text-center shadow-lg">
+              <div className="mb-4">
+                <Shield className="h-12 w-12 mx-auto" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">You're in Charge</h3>
+              <p className="text-white/90">
+                Take full control of your listing - add photos or videos anytime and update or remove your property whenever you like
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Cost Comparison */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Save Money With Openmove
+            </h2>
+            <p className="text-xl text-gray-600">
+              See how much you could save by selling your property directly
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Traditional Estate Agent */}
+            <div className="bg-gray-500 text-white p-8 rounded-lg">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold mb-2">Traditional Estate Agent</h3>
+                <p className="text-gray-200">Commission-based fees</p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex justify-between text-lg">
+                  <span>Property Value:</span>
+                  <span className="font-semibold">£400,000</span>
+                </div>
+                <div className="flex justify-between text-lg">
+                  <span>Commission (1.5%):</span>
+                  <span className="font-semibold">£6,000</span>
+                </div>
+                <div className="flex justify-between text-lg">
+                  <span>Marketing:</span>
+                  <span className="font-semibold">£500</span>
+                </div>
+                <div className="border-t border-gray-400 pt-4">
+                  <div className="flex justify-between text-xl font-bold">
+                    <span>Total Cost:</span>
+                    <span>£6,500</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Openmove */}
+            <div className="bg-gradient-to-r from-primary-500 to-primary-700 text-white p-8 rounded-lg shadow-lg">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold mb-2">Openmove</h3>
+                <p className="text-white/90">Fixed transparent fees</p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex justify-between text-lg">
+                  <span>Property Value:</span>
+                  <span className="font-semibold">£400,000</span>
+                </div>
+                <div className="flex justify-between text-lg">
+                  <span>Listing Fee:</span>
+                  <span className="font-semibold">£10</span>
+                </div>
+                <div className="flex justify-between text-lg">
+                  <span>Marketing:</span>
+                  <span className="font-semibold">£0</span>
+                </div>
+                <div className="border-t border-white/30 pt-4">
+                  <div className="flex justify-between text-xl font-bold">
+                    <span>Total Cost:</span>
+                    <span>£10</span>
+                  </div>
+                  <div className="mt-2 text-center">
+                    <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold">
+                      Save £6,490!
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Properties */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Featured Properties</h2>
+              <p className="text-gray-600">Discover the latest listings on our platform</p>
+            </div>
+            
+            {/* Sort Dropdown */}
+            <div className="mt-4 sm:mt-0">
+              <div className="relative">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Sort:</label>
+                <select 
+                  value={sortBy}
+                  onChange={(e) => handleSort(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  <option value="newest">Newest first</option>
+                  <option value="price_low">Price: Low to High</option>
+                  <option value="price_high">Price: High to Low</option>
+                  <option value="bedrooms">Most Bedrooms</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Properties Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {searchResults.map((property) => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
+          </div>
+
+          {/* Load More */}
+          <div className="text-center mt-12">
+            <button className="bg-primary-500 text-white px-8 py-3 rounded-lg hover:bg-primary-600 transition-colors font-semibold">
+              View All Properties
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-16 bg-primary-500">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+            Ready to Sell Your Property?
+          </h2>
+          <p className="text-xl text-white/90 mb-8">
+            Join thousands of homeowners who have saved money by selling directly
+          </p>
+          <button className="bg-white text-primary-500 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg">
+            List Your Property for £10
+          </button>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }
