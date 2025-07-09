@@ -1,6 +1,6 @@
 'use client';
 
-import { X, MapPin, Bed, Bath, Home, Calendar, Phone, Mail, Heart } from 'lucide-react';
+import { X, MapPin, Bed, Bath, Home, Phone, Mail, Heart } from 'lucide-react';
 import Image from 'next/image';
 import { Property } from '@/data/properties';
 

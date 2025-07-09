@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import SearchBar from '@/components/SearchBar';
 import PropertyCard from '@/components/PropertyCard';
 import { getFeaturedProperties, searchProperties } from '@/data/properties';
-import { MessageCircle, Zap, Shield, ChevronDown } from 'lucide-react';
+import { MessageCircle, Zap, Shield } from 'lucide-react';
 
 export default function Home() {
   const [searchResults, setSearchResults] = useState(getFeaturedProperties());
@@ -81,7 +81,7 @@ export default function Home() {
               <div className="mb-4">
                 <Shield className="h-12 w-12 mx-auto" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">You're in Charge</h3>
+              <h3 className="text-2xl font-bold mb-4">You&apos;re in Charge</h3>
               <p className="text-white/90">
                 Take full control of your listing - add photos or videos anytime and update or remove your property whenever you like
               </p>
