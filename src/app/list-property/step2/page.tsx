@@ -7,6 +7,7 @@ export default function ListPropertyStep2() {
   const [formData, setFormData] = useState({
     description: '',
     imagePreviewUrls: [] as string[],
+    imageData: [] as Array<{base64: string, name: string, type: string}>,
     imageCount: 0
   })
 
@@ -14,16 +15,34 @@ export default function ListPropertyStep2() {
     // Component mounted - could load step 1 data if needed for validation
   }, [])
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     if (files) {
       const newFiles = Array.from(files)
       const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file))
       
+      // Convert files to base64 for storage
+      const imageDataPromises = newFiles.map(file => {
+        return new Promise<{base64: string, name: string, type: string}>((resolve) => {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            resolve({
+              base64: e.target?.result as string,
+              name: file.name,
+              type: file.type
+            })
+          }
+          reader.readAsDataURL(file)
+        })
+      })
+      
+      const newImageData = await Promise.all(imageDataPromises)
+      
       setFormData(prev => ({
         ...prev,
         imageCount: prev.imageCount + newFiles.length,
-        imagePreviewUrls: [...prev.imagePreviewUrls, ...newPreviewUrls]
+        imagePreviewUrls: [...prev.imagePreviewUrls, ...newPreviewUrls],
+        imageData: [...prev.imageData, ...newImageData]
       }))
     }
   }
@@ -32,7 +51,8 @@ export default function ListPropertyStep2() {
     setFormData(prev => ({
       ...prev,
       imageCount: prev.imageCount - 1,
-      imagePreviewUrls: prev.imagePreviewUrls.filter((_, i) => i !== index)
+      imagePreviewUrls: prev.imagePreviewUrls.filter((_, i) => i !== index),
+      imageData: prev.imageData.filter((_, i) => i !== index)
     }))
   }
 
