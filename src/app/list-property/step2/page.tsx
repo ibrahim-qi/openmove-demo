@@ -16,6 +16,14 @@ export default function ListPropertyStep2() {
   useEffect(() => {
     // Component mounted - could load step 1 data if needed for validation
   }, [])
+  
+  // Debug effect to track validation state changes
+  useEffect(() => {
+    if (debugInfo.length > 0) {
+      const isValid = formData.description.trim() && formData.imageCount >= 3
+      addDebugInfo(`📊 State updated - Images: ${formData.imageCount}, Description: ${formData.description.length} chars, Valid: ${isValid}`)
+    }
+  }, [formData.imageCount, formData.description])
 
   const addDebugInfo = (message: string) => {
     setDebugInfo(prev => [...prev, `${new Date().toLocaleTimeString()}: ${message}`])
@@ -92,7 +100,14 @@ export default function ListPropertyStep2() {
   }
 
   const isFormValid = () => {
-    return formData.description.trim() && formData.imageCount >= 3
+    const isValid = formData.description.trim() && formData.imageCount >= 3
+    
+    // Add debug info about validation
+    if (debugInfo.length > 0) {
+      addDebugInfo(`🔍 Validation check: description="${formData.description.trim()}" (${formData.description.trim().length} chars), imageCount=${formData.imageCount}, isValid=${isValid}`)
+    }
+    
+    return isValid
   }
 
   const handleBack = () => {
@@ -102,11 +117,16 @@ export default function ListPropertyStep2() {
   }
 
   const handleContinue = () => {
+    addDebugInfo(`🚀 Continue button clicked - checking validation...`)
+    
     if (isFormValid()) {
+      addDebugInfo(`✅ Validation passed - proceeding to step 3`)
       // Store form data in sessionStorage
       sessionStorage.setItem('propertyFormStep2', JSON.stringify(formData))
       // Navigate to step 3
       window.location.href = '/list-property/step3'
+    } else {
+      addDebugInfo(`❌ Validation failed - cannot proceed`)
     }
   }
 
@@ -293,12 +313,23 @@ export default function ListPropertyStep2() {
                 <h3 className="text-sm font-semibold text-gray-900">
                   🔍 Debug Info (for troubleshooting)
                 </h3>
-                <button
-                  onClick={() => setDebugInfo([])}
-                  className="text-xs text-gray-500 hover:text-gray-700"
-                >
-                  Clear
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      const isValid = formData.description.trim() && formData.imageCount >= 3
+                      addDebugInfo(`🔍 Manual check - Images: ${formData.imageCount}, Description: "${formData.description.trim()}" (${formData.description.length} chars), Valid: ${isValid}`)
+                    }}
+                    className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                  >
+                    Check Status
+                  </button>
+                  <button
+                    onClick={() => setDebugInfo([])}
+                    className="text-xs text-gray-500 hover:text-gray-700"
+                  >
+                    Clear
+                  </button>
+                </div>
               </div>
               <div className="max-h-40 overflow-y-auto bg-white rounded p-2 text-xs font-mono">
                 {debugInfo.map((info, index) => (
@@ -315,6 +346,9 @@ export default function ListPropertyStep2() {
             <div className="text-center mb-6">
               <p className="text-gray-500">
                 Add at least 3 photos and a property description to continue
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                Current: {formData.imageCount} photos, {formData.description.length} description characters
               </p>
             </div>
           )}
