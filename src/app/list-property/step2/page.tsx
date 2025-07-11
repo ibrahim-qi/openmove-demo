@@ -107,10 +107,32 @@ export default function ListPropertyStep2() {
     
     if (isValid) {
       addDebugInfo(`✅ Validation passed - proceeding to step 3`)
+      
       // Store form data in sessionStorage
-      sessionStorage.setItem('propertyFormStep2', JSON.stringify(formData))
+      try {
+        sessionStorage.setItem('propertyFormStep2', JSON.stringify(formData))
+        addDebugInfo(`💾 Data saved to sessionStorage successfully`)
+      } catch (error) {
+        addDebugInfo(`❌ Error saving to sessionStorage: ${error}`)
+        return
+      }
+      
       // Navigate to step 3
-      window.location.href = '/list-property/step3'
+      addDebugInfo(`🔄 Attempting navigation to /list-property/step3...`)
+      
+      try {
+        window.location.href = '/list-property/step3'
+        addDebugInfo(`✅ Navigation command executed`)
+      } catch (error) {
+        addDebugInfo(`❌ Navigation error: ${error}`)
+      }
+      
+      // If we're still here after 2 seconds, something went wrong
+      setTimeout(() => {
+        addDebugInfo(`⚠️ Still on this page after navigation attempt - trying alternative method`)
+        window.location.assign('/list-property/step3')
+      }, 2000)
+      
     } else {
       addDebugInfo(`❌ Validation failed - cannot proceed`)
     }
@@ -304,10 +326,28 @@ export default function ListPropertyStep2() {
                     onClick={() => {
                       const isValid = formData.description.trim() && formData.imageCount >= 3
                       addDebugInfo(`🔍 Manual check - Images: ${formData.imageCount}, Description: "${formData.description.trim()}" (${formData.description.length} chars), Valid: ${isValid}`)
+                      
+                      // Check sessionStorage size and data
+                      try {
+                        const step2Data = JSON.stringify(formData)
+                        addDebugInfo(`📏 Data size: ${step2Data.length} characters`)
+                        addDebugInfo(`📊 ImageData count: ${formData.imageData.length}, Preview URLs: ${formData.imagePreviewUrls.length}`)
+                      } catch (error) {
+                        addDebugInfo(`❌ Cannot serialize form data: ${error}`)
+                      }
                     }}
                     className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
                   >
                     Check Status
+                  </button>
+                  <button
+                    onClick={() => {
+                      addDebugInfo(`🔧 Testing direct navigation...`)
+                      window.open('/list-property/step3', '_blank')
+                    }}
+                    className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+                  >
+                    Test Step3
                   </button>
                   <button
                     onClick={() => setDebugInfo([])}
