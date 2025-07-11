@@ -16,14 +16,6 @@ export default function ListPropertyStep2() {
   useEffect(() => {
     // Component mounted - could load step 1 data if needed for validation
   }, [])
-  
-  // Debug effect to track validation state changes
-  useEffect(() => {
-    if (debugInfo.length > 0) {
-      const isValid = formData.description.trim() && formData.imageCount >= 3
-      addDebugInfo(`📊 State updated - Images: ${formData.imageCount}, Description: ${formData.description.length} chars, Valid: ${isValid}`)
-    }
-  }, [formData.imageCount, formData.description])
 
   const addDebugInfo = (message: string) => {
     setDebugInfo(prev => [...prev, `${new Date().toLocaleTimeString()}: ${message}`])
@@ -100,14 +92,7 @@ export default function ListPropertyStep2() {
   }
 
   const isFormValid = () => {
-    const isValid = formData.description.trim() && formData.imageCount >= 3
-    
-    // Add debug info about validation
-    if (debugInfo.length > 0) {
-      addDebugInfo(`🔍 Validation check: description="${formData.description.trim()}" (${formData.description.trim().length} chars), imageCount=${formData.imageCount}, isValid=${isValid}`)
-    }
-    
-    return isValid
+    return formData.description.trim() && formData.imageCount >= 3
   }
 
   const handleBack = () => {
@@ -117,9 +102,10 @@ export default function ListPropertyStep2() {
   }
 
   const handleContinue = () => {
-    addDebugInfo(`🚀 Continue button clicked - checking validation...`)
+    const isValid = formData.description.trim() && formData.imageCount >= 3
+    addDebugInfo(`🚀 Continue clicked - Images: ${formData.imageCount}, Description: ${formData.description.length} chars, Valid: ${isValid}`)
     
-    if (isFormValid()) {
+    if (isValid) {
       addDebugInfo(`✅ Validation passed - proceeding to step 3`)
       // Store form data in sessionStorage
       sessionStorage.setItem('propertyFormStep2', JSON.stringify(formData))
