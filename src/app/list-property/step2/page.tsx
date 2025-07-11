@@ -10,40 +10,75 @@ export default function ListPropertyStep2() {
     imageData: [] as Array<{base64: string, name: string, type: string}>,
     imageCount: 0
   })
+  
+  const [debugInfo, setDebugInfo] = useState<string[]>([])
 
   useEffect(() => {
     // Component mounted - could load step 1 data if needed for validation
   }, [])
 
+  const addDebugInfo = (message: string) => {
+    setDebugInfo(prev => [...prev, `${new Date().toLocaleTimeString()}: ${message}`])
+  }
+
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     if (files) {
       const newFiles = Array.from(files)
+      
+      // Add debug info about selected files
+      addDebugInfo(`📁 Selected ${newFiles.length} files`)
+      newFiles.forEach((file, i) => {
+        addDebugInfo(`File ${i + 1}: ${file.name} (${file.type}, ${(file.size / 1024 / 1024).toFixed(2)}MB)`)
+      })
+      
       const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file))
+      addDebugInfo(`✅ Created ${newPreviewUrls.length} preview URLs`)
       
       // Convert files to base64 for storage
-      const imageDataPromises = newFiles.map(file => {
-        return new Promise<{base64: string, name: string, type: string}>((resolve) => {
+      const imageDataPromises = newFiles.map((file, index) => {
+        return new Promise<{base64: string, name: string, type: string}>((resolve, reject) => {
           const reader = new FileReader()
+          
           reader.onload = (e) => {
+            addDebugInfo(`✅ File ${index + 1} (${file.name}) loaded successfully`)
             resolve({
               base64: e.target?.result as string,
               name: file.name,
               type: file.type
             })
           }
+          
+          reader.onerror = (e) => {
+            addDebugInfo(`❌ Error reading file ${index + 1} (${file.name})`)
+            reject(new Error(`Failed to read file: ${file.name}`))
+          }
+          
+          reader.onabort = () => {
+            addDebugInfo(`⚠️ File reading aborted for ${file.name}`)
+            reject(new Error(`Reading aborted: ${file.name}`))
+          }
+          
+          addDebugInfo(`🔄 Starting to read file ${index + 1}: ${file.name}`)
           reader.readAsDataURL(file)
         })
       })
       
-      const newImageData = await Promise.all(imageDataPromises)
-      
-      setFormData(prev => ({
-        ...prev,
-        imageCount: prev.imageCount + newFiles.length,
-        imagePreviewUrls: [...prev.imagePreviewUrls, ...newPreviewUrls],
-        imageData: [...prev.imageData, ...newImageData]
-      }))
+      try {
+        const newImageData = await Promise.all(imageDataPromises)
+        addDebugInfo(`🎉 All ${newImageData.length} files processed successfully!`)
+        
+        setFormData(prev => ({
+          ...prev,
+          imageCount: prev.imageCount + newFiles.length,
+          imagePreviewUrls: [...prev.imagePreviewUrls, ...newPreviewUrls],
+          imageData: [...prev.imageData, ...newImageData]
+        }))
+        addDebugInfo(`📊 Updated state: ${newFiles.length} new images added`)
+      } catch (error) {
+        addDebugInfo(`💥 Error processing files: ${error}`)
+        alert('Some images failed to upload. Check debug info below for details.')
+      }
     }
   }
 
@@ -250,6 +285,30 @@ export default function ListPropertyStep2() {
               rows={6}
             />
           </div>
+
+          {/* Debug Info Panel */}
+          {debugInfo.length > 0 && (
+            <div className="bg-gray-100 rounded-lg p-4 mb-8">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-sm font-semibold text-gray-900">
+                  🔍 Debug Info (for troubleshooting)
+                </h3>
+                <button
+                  onClick={() => setDebugInfo([])}
+                  className="text-xs text-gray-500 hover:text-gray-700"
+                >
+                  Clear
+                </button>
+              </div>
+              <div className="max-h-40 overflow-y-auto bg-white rounded p-2 text-xs font-mono">
+                {debugInfo.map((info, index) => (
+                  <div key={index} className="mb-1 text-gray-700">
+                    {info}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Validation Message */}
           {!isFormValid() && (
