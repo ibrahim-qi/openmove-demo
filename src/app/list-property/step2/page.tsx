@@ -6,8 +6,8 @@ import { Camera, Upload, X } from 'lucide-react'
 export default function ListPropertyStep2() {
   const [formData, setFormData] = useState({
     description: '',
-    images: [] as File[],
-    imagePreviewUrls: [] as string[]
+    imagePreviewUrls: [] as string[],
+    imageCount: 0
   })
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function ListPropertyStep2() {
       
       setFormData(prev => ({
         ...prev,
-        images: [...prev.images, ...newFiles],
+        imageCount: prev.imageCount + newFiles.length,
         imagePreviewUrls: [...prev.imagePreviewUrls, ...newPreviewUrls]
       }))
     }
@@ -31,13 +31,13 @@ export default function ListPropertyStep2() {
   const removeImage = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index),
+      imageCount: prev.imageCount - 1,
       imagePreviewUrls: prev.imagePreviewUrls.filter((_, i) => i !== index)
     }))
   }
 
   const isFormValid = () => {
-    return formData.description.trim() && formData.images.length >= 3
+    return formData.description.trim() && formData.imageCount >= 3
   }
 
   const handleBack = () => {
@@ -181,7 +181,7 @@ export default function ListPropertyStep2() {
               
               <div className="mt-4 text-center">
                 <span className="text-sm text-gray-600">
-                  Media Summary: {formData.images.length} photos, 0 videos
+                  Media Summary: {formData.imageCount} photos, 0 videos
                 </span>
               </div>
             </div>

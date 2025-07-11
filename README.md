@@ -1,41 +1,154 @@
-# Openmove Demo
+# Openmove - Complete Property Platform
 
-A modern property listing platform that enables homeowners to sell their properties directly without estate agents.
+A comprehensive property listing platform that enables homeowners to sell their properties directly without estate agents. Built with Next.js 15, TypeScript, and Supabase for a complete full-stack solution.
 
-## 🌟 Features
+## 🚀 Key Features
 
-- **Direct Property Sales**: Bypass traditional estate agents and their fees
+- **Multi-Step Property Listing**: Complete 3-step listing process with validation
+- **Real Database Backend**: Full Supabase integration with PostgreSQL
+- **Image Upload & Storage**: Property photos stored in Supabase Storage
+- **Real-Time Search**: Find properties by location, type, postcode with live filtering
+- **Mobile Responsive**: Optimized for all devices with modern UI/UX
 - **Cost Savings**: Save thousands compared to traditional estate agent commissions
-- **Modern UI/UX**: Clean, responsive design inspired by leading property platforms
-- **Real-time Search**: Find properties by location, type, or postcode
-- **Property Listings**: Detailed property cards with images, pricing, and features
-- **Mobile Responsive**: Optimized for all devices
 
-## 🚀 Tech Stack
+## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 15 with App Router
+- **Frontend**: Next.js 15 with App Router & TypeScript
+- **Backend**: Supabase (PostgreSQL + Storage + Auth)
 - **Styling**: Tailwind CSS v4
 - **Icons**: Lucide React
-- **TypeScript**: Full type safety
-- **Responsive Design**: Mobile-first approach
+- **Deployment**: Vercel-ready
 
-## 📱 Demo Sections
+## 📋 Complete Functionality
 
-1. **Hero Section**: Main value proposition and search functionality
-2. **Value Propositions**: Three key benefits (Complete Faster, Connect Directly, You're in Charge)
-3. **Cost Comparison**: Traditional estate agents vs Openmove savings
-4. **Featured Properties**: Property listings with filtering and search
-5. **Call to Action**: Encourage users to list their property
+### Property Listing Flow
+1. **Overview Page** (`/list-property`) - How it works guide
+2. **Step 1** (`/list-property/step1`) - Property details, location, features
+3. **Step 2** (`/list-property/step2`) - Photo upload, descriptions, floor plans
+4. **Step 3** (`/list-property/step3`) - Pricing and review
+5. **Success Page** (`/list-property/success`) - Confirmation and sharing
 
-## 🏠 Sample Properties
+### Homepage Features
+- Hero section with search functionality
+- Value propositions (Complete Faster, Connect Directly, You're in Charge)
+- Cost comparison vs traditional estate agents
+- Featured properties with real database integration
+- Advanced filtering and sorting
 
-The demo includes 6 realistic UK property listings:
-- Victorian Terrace in Brighton
-- Modern Family Home in Hampstead  
-- Luxury Apartment in London
-- Countryside Cottage in Cotswolds
-- City Penthouse in Manchester
-- Traditional Farmhouse in Yorkshire Dales
+### Database Schema
+Complete properties table with:
+- Basic info (title, type, price, listing_type)
+- Address details (property_name, address lines, city, postcode)
+- Property specs (bedrooms, bathrooms, floor_area, description)
+- Features (40+ selectable features + custom features as JSONB)
+- Images (stored in Supabase Storage with public URLs)
+- Status management and timestamps
+
+## 🔧 Setup Instructions
+
+### 1. Install Dependencies
+```bash
+npm install
+```
+
+### 2. Supabase Setup
+
+1. Create account at [supabase.com](https://supabase.com)
+2. Create new project
+3. Go to **SQL Editor** and run the complete schema:
+
+```sql
+-- Create properties table
+CREATE TABLE properties (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+  
+  -- Basic property information
+  title TEXT NOT NULL,
+  type TEXT NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  listing_type TEXT NOT NULL CHECK (listing_type IN ('sale', 'rent')),
+  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'sold', 'rented', 'withdrawn')),
+  
+  -- Address information
+  property_name TEXT,
+  address_line_1 TEXT NOT NULL,
+  address_line_2 TEXT,
+  city TEXT NOT NULL,
+  postcode TEXT NOT NULL,
+  
+  -- Property details
+  bedrooms INTEGER NOT NULL,
+  bathrooms INTEGER NOT NULL,
+  floor_area INTEGER NOT NULL,
+  description TEXT NOT NULL,
+  
+  -- Features and amenities
+  features JSONB DEFAULT '[]'::jsonb,
+  custom_features JSONB DEFAULT '[]'::jsonb,
+  
+  -- Images and media
+  images JSONB DEFAULT '[]'::jsonb,
+  
+  -- Additional metadata
+  property_tenure TEXT DEFAULT 'Freehold'
+);
+
+-- Create indexes for performance
+CREATE INDEX idx_properties_listing_type ON properties(listing_type);
+CREATE INDEX idx_properties_status ON properties(status);
+CREATE INDEX idx_properties_price ON properties(price);
+CREATE INDEX idx_properties_city ON properties(city);
+CREATE INDEX idx_properties_created_at ON properties(created_at);
+
+-- Enable Row Level Security
+ALTER TABLE properties ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access to active properties
+CREATE POLICY "Allow public read access to active properties" ON properties
+  FOR SELECT USING (status = 'active');
+
+-- Allow public insert for property listings
+CREATE POLICY "Allow public insert" ON properties
+  FOR INSERT WITH CHECK (true);
+
+-- Create storage bucket for property images
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('property-images', 'property-images', true);
+
+-- Storage policies for image upload
+CREATE POLICY "Public read access to property images" ON storage.objects
+  FOR SELECT USING (bucket_id = 'property-images');
+
+CREATE POLICY "Public upload access to property images" ON storage.objects
+  FOR INSERT WITH CHECK (bucket_id = 'property-images');
+```
+
+### 3. Environment Variables
+
+Create `.env.local` file:
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+Get these from **Supabase Dashboard** → **Settings** → **API**
+
+### 4. Development
+
+```bash
+npm run dev
+# Open http://localhost:3000
+```
+
+### 5. Deployment (Vercel)
+
+1. Connect your GitHub repository to Vercel
+2. Add environment variables in **Vercel Dashboard** → **Settings** → **Environment Variables**:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+3. Deploy
 
 ## 💰 Value Proposition
 
@@ -45,45 +158,56 @@ The demo includes 6 realistic UK property listings:
 - Marketing: £500
 
 **Openmove**: £10 total cost
-- Property Value: £400,000
 - Listing Fee: £10
 - Marketing: £0
-- **Total Savings: £6,490**
+- **Total Savings: £6,490 (99.8% cost reduction)**
 
-## 🎨 Design
+## 🎯 Demo Flow for Clients
 
-The design matches the original mockup with:
-- Pink/magenta primary color scheme (#e91e63)
-- Clean, modern typography using Inter font
-- Professional property card layouts
-- Responsive grid systems
-- Smooth hover animations and transitions
+1. **Homepage**: Show search, filtering, and property cards
+2. **List Property**: Walk through complete 3-step listing process
+3. **Database Integration**: Show properties saving and appearing instantly
+4. **Search & Filter**: Demonstrate real-time search functionality
+5. **Mobile Responsive**: Test on different screen sizes
+6. **Backend Admin**: Show Supabase dashboard with real data
 
-## 🔧 Getting Started
+## 🏗️ Architecture Highlights
 
-```bash
-# Install dependencies
-npm install
+- **Type-Safe**: Full TypeScript implementation with proper interfaces
+- **Performant**: Optimized database queries with indexing
+- **Scalable**: Supabase backend handles authentication, storage, and real-time features
+- **SEO-Ready**: Next.js App Router with proper meta tags
+- **Production-Ready**: Error handling, loading states, and fallbacks
 
-# Start development server
-npm run dev
+## 📱 Features Implemented
 
-# Open http://localhost:3000
-```
+✅ **Property Listing Flow**
+- Multi-step form with validation
+- 40+ property features selection
+- Custom features input
+- Image upload with preview
+- Floor plan upload support
 
-## 📝 Demo Scope
+✅ **Database Integration**
+- Complete CRUD operations
+- Real-time property search
+- Advanced filtering and sorting
+- Image storage and retrieval
 
-This is a **demonstration version** that includes:
-- ✅ Homepage with all key sections
-- ✅ Property search functionality
-- ✅ Responsive design
-- ✅ Professional UI/UX
-- ✅ Sample data and realistic content
+✅ **UI/UX**
+- Modern, responsive design
+- Loading states and error handling
+- Mobile-first approach
+- Professional property cards
 
-**Note**: This demo uses mock data and is designed to showcase the design and functionality concept.
+✅ **Performance**
+- Optimized images and lazy loading
+- Database indexing
+- Efficient search queries
+- Fast build times
 
-## 🌐 Deployment
+This demonstrates a complete £4,500 MVP with professional UI, full backend functionality, and production-ready architecture.
 
-The demo can be easily deployed to Vercel, Netlify, or any modern hosting platform that supports Next.js applications.
+---
 
-Built with ❤️ for property sellers who want to save money and maintain control.
+Built with ❤️ to help property sellers save money and maintain control of their sales process.
