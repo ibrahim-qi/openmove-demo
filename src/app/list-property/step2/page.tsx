@@ -3,11 +3,65 @@
 import { useState, useEffect } from 'react'
 import { Camera, Upload, X } from 'lucide-react'
 
+// IndexedDB helper functions
+const initDB = (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('PropertyListingDB', 1)
+    
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => resolve(request.result)
+    
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result
+      if (!db.objectStoreNames.contains('images')) {
+        db.createObjectStore('images', { keyPath: 'id' })
+      }
+    }
+  })
+}
+
+const storeImageInDB = async (imageData: {base64: string, name: string, type: string}): Promise<string> => {
+  const db = await initDB()
+  const transaction = db.transaction(['images'], 'readwrite')
+  const store = transaction.objectStore('images')
+  
+  const id = `img_${Date.now()}_${Math.random().toString(36).substring(2)}`
+  await store.put({ id, ...imageData, timestamp: Date.now() })
+  
+  return id
+}
+
+const getImagesFromDB = async (): Promise<Array<{id: string, base64: string, name: string, type: string}>> => {
+  const db = await initDB()
+  const transaction = db.transaction(['images'], 'readonly')
+  const store = transaction.objectStore('images')
+  
+  return new Promise((resolve, reject) => {
+    const request = store.getAll()
+    request.onsuccess = () => resolve(request.result)
+    request.onerror = () => reject(request.error)
+  })
+}
+
+const removeImageFromDB = async (id: string): Promise<void> => {
+  const db = await initDB()
+  const transaction = db.transaction(['images'], 'readwrite')
+  const store = transaction.objectStore('images')
+  await store.delete(id)
+}
+
+const clearAllImagesFromDB = async (): Promise<void> => {
+  const db = await initDB()
+  const transaction = db.transaction(['images'], 'readwrite')
+  const store = transaction.objectStore('images')
+  await store.clear()
+}
+
 export default function ListPropertyStep2() {
   const [formData, setFormData] = useState({
     description: '',
     imagePreviewUrls: [] as string[],
-    imageData: [] as Array<{base64: string, name: string, type: string}>,
+    imageIds: [] as string[], // Store IndexedDB IDs instead of image data
     imageCount: 0
   })
   
@@ -68,32 +122,36 @@ export default function ListPropertyStep2() {
       const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file))
       addDebugInfo(`✅ Created ${newPreviewUrls.length} preview URLs`)
       
-      // Compress and convert files to base64 for storage
-      addDebugInfo(`🔄 Starting image compression...`)
-      const imageDataPromises = newFiles.map((file, index) => {
+      // Compress and store files in IndexedDB
+      addDebugInfo(`🔄 Starting image compression and IndexedDB storage...`)
+      const imageStoragePromises = newFiles.map((file, index) => {
         addDebugInfo(`🔄 Compressing file ${index + 1}: ${file.name}`)
         return compressImage(file)
-          .then(result => {
+          .then(async (compressedImage) => {
             const originalSize = (file.size / 1024 / 1024).toFixed(2)
-            const compressedSize = (result.base64.length / 1024 / 1024 * 0.75).toFixed(2) // rough estimate
+            const compressedSize = (compressedImage.base64.length / 1024 / 1024 * 0.75).toFixed(2)
             addDebugInfo(`✅ File ${index + 1} compressed: ${originalSize}MB → ~${compressedSize}MB`)
-            return result
+            
+            // Store in IndexedDB
+            const imageId = await storeImageInDB(compressedImage)
+            addDebugInfo(`💾 File ${index + 1} stored in IndexedDB with ID: ${imageId}`)
+            return imageId
           })
           .catch(error => {
-            addDebugInfo(`❌ Error compressing file ${index + 1} (${file.name}): ${error}`)
+            addDebugInfo(`❌ Error processing file ${index + 1} (${file.name}): ${error}`)
             throw error
           })
       })
       
       try {
-        const newImageData = await Promise.all(imageDataPromises)
-        addDebugInfo(`🎉 All ${newImageData.length} files compressed successfully!`)
+        const newImageIds = await Promise.all(imageStoragePromises)
+        addDebugInfo(`🎉 All ${newImageIds.length} files stored in IndexedDB successfully!`)
         
         setFormData(prev => ({
           ...prev,
           imageCount: prev.imageCount + newFiles.length,
           imagePreviewUrls: [...prev.imagePreviewUrls, ...newPreviewUrls],
-          imageData: [...prev.imageData, ...newImageData]
+          imageIds: [...prev.imageIds, ...newImageIds]
         }))
         addDebugInfo(`📊 Updated state: ${newFiles.length} new images added`)
       } catch (error) {
@@ -103,12 +161,29 @@ export default function ListPropertyStep2() {
     }
   }
 
-  const removeImage = (index: number) => {
+  const removeImage = async (index: number) => {
+    // Remove from IndexedDB
+    const imageIdToRemove = formData.imageIds[index]
+    if (imageIdToRemove) {
+      try {
+        await removeImageFromDB(imageIdToRemove)
+        addDebugInfo(`🗑️ Removed image from IndexedDB: ${imageIdToRemove}`)
+      } catch (error) {
+        addDebugInfo(`❌ Error removing image from IndexedDB: ${error}`)
+      }
+    }
+    
+    // Clean up preview URL
+    const urlToRevoke = formData.imagePreviewUrls[index]
+    if (urlToRevoke) {
+      URL.revokeObjectURL(urlToRevoke)
+    }
+    
     setFormData(prev => ({
       ...prev,
       imageCount: prev.imageCount - 1,
       imagePreviewUrls: prev.imagePreviewUrls.filter((_, i) => i !== index),
-      imageData: prev.imageData.filter((_, i) => i !== index)
+      imageIds: prev.imageIds.filter((_, i) => i !== index)
     }))
   }
 
@@ -129,10 +204,16 @@ export default function ListPropertyStep2() {
     if (isValid) {
       addDebugInfo(`✅ Validation passed - proceeding to step 3`)
       
-      // Store form data in sessionStorage
+      // Store lightweight form data in sessionStorage (no heavy image data)
+      const step2Data = {
+        description: formData.description,
+        imageIds: formData.imageIds,
+        imageCount: formData.imageCount
+      }
+      
       try {
-        sessionStorage.setItem('propertyFormStep2', JSON.stringify(formData))
-        addDebugInfo(`💾 Data saved to sessionStorage successfully`)
+        sessionStorage.setItem('propertyFormStep2', JSON.stringify(step2Data))
+        addDebugInfo(`💾 Lightweight data saved to sessionStorage (${JSON.stringify(step2Data).length} chars)`)
       } catch (error) {
         addDebugInfo(`❌ Error saving to sessionStorage: ${error}`)
         return
@@ -140,19 +221,7 @@ export default function ListPropertyStep2() {
       
       // Navigate to step 3
       addDebugInfo(`🔄 Attempting navigation to /list-property/step3...`)
-      
-      try {
-        window.location.href = '/list-property/step3'
-        addDebugInfo(`✅ Navigation command executed`)
-      } catch (error) {
-        addDebugInfo(`❌ Navigation error: ${error}`)
-      }
-      
-      // If we're still here after 2 seconds, something went wrong
-      setTimeout(() => {
-        addDebugInfo(`⚠️ Still on this page after navigation attempt - trying alternative method`)
-        window.location.assign('/list-property/step3')
-      }, 2000)
+      window.location.href = '/list-property/step3'
       
     } else {
       addDebugInfo(`❌ Validation failed - cannot proceed`)
@@ -344,17 +413,21 @@ export default function ListPropertyStep2() {
                 </h3>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => {
+                    onClick={async () => {
                       const isValid = formData.description.trim() && formData.imageCount >= 3
                       addDebugInfo(`🔍 Manual check - Images: ${formData.imageCount}, Description: "${formData.description.trim()}" (${formData.description.length} chars), Valid: ${isValid}`)
                       
-                      // Check sessionStorage size and data
+                      // Check IndexedDB and sessionStorage data
                       try {
                         const step2Data = JSON.stringify(formData)
-                        addDebugInfo(`📏 Data size: ${step2Data.length} characters`)
-                        addDebugInfo(`📊 ImageData count: ${formData.imageData.length}, Preview URLs: ${formData.imagePreviewUrls.length}`)
+                        addDebugInfo(`📏 SessionStorage data size: ${step2Data.length} characters`)
+                        addDebugInfo(`📊 Image IDs count: ${formData.imageIds.length}, Preview URLs: ${formData.imagePreviewUrls.length}`)
+                        
+                        // Check IndexedDB
+                        const imagesInDB = await getImagesFromDB()
+                        addDebugInfo(`💾 IndexedDB has ${imagesInDB.length} images stored`)
                       } catch (error) {
-                        addDebugInfo(`❌ Cannot serialize form data: ${error}`)
+                        addDebugInfo(`❌ Error checking data: ${error}`)
                       }
                     }}
                     className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"

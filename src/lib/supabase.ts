@@ -47,7 +47,8 @@ export interface PropertyFormData {
   
   // Step 2: Photos & Details
   description: string
-  images: File[]
+  imageIds: string[]
+  imageCount: number
   
   // Step 3: Pricing
   price: number

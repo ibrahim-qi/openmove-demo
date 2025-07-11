@@ -28,6 +28,53 @@ export default function ListPropertyReview() {
     window.location.href = '/list-property/step3'
   }
 
+  // IndexedDB helper functions (same as step2)
+  const initDB = (): Promise<IDBDatabase> => {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('PropertyListingDB', 1)
+      
+      request.onerror = () => reject(request.error)
+      request.onsuccess = () => resolve(request.result)
+      
+      request.onupgradeneeded = (event) => {
+        const db = (event.target as IDBOpenDBRequest).result
+        if (!db.objectStoreNames.contains('images')) {
+          db.createObjectStore('images', { keyPath: 'id' })
+        }
+      }
+    })
+  }
+
+  const getImagesFromDB = async (imageIds: string[]): Promise<Array<{base64: string, name: string, type: string}>> => {
+    const db = await initDB()
+    const transaction = db.transaction(['images'], 'readonly')
+    const store = transaction.objectStore('images')
+    
+    const images: Array<{base64: string, name: string, type: string}> = []
+    for (const id of imageIds) {
+      const request = store.get(id)
+      const result = await new Promise<any>((resolve, reject) => {
+        request.onsuccess = () => resolve(request.result)
+        request.onerror = () => reject(request.error)
+      })
+      if (result && result.base64 && result.name && result.type) {
+        images.push({
+          base64: result.base64,
+          name: result.name,
+          type: result.type
+        })
+      }
+    }
+    return images
+  }
+
+  const clearAllImagesFromDB = async (): Promise<void> => {
+    const db = await initDB()
+    const transaction = db.transaction(['images'], 'readwrite')
+    const store = transaction.objectStore('images')
+    await store.clear()
+  }
+
   const uploadImagesToSupabase = async (imageData: Array<{base64: string, name: string, type: string}>) => {
     const uploadedUrls: string[] = []
     
@@ -91,10 +138,12 @@ export default function ListPropertyReview() {
     setIsSubmitting(true)
 
     try {
-      // Upload images to Supabase storage
-      const imageUrls = step2Data.imageData?.length 
-        ? await uploadImagesToSupabase(step2Data.imageData)
-        : []
+      // Get images from IndexedDB and upload to Supabase storage
+      let imageUrls: string[] = []
+      if (step2Data.imageIds?.length) {
+        const imageData = await getImagesFromDB(step2Data.imageIds)
+        imageUrls = await uploadImagesToSupabase(imageData)
+      }
 
       // Combine all form data
       const propertyData = {
@@ -132,10 +181,13 @@ export default function ListPropertyReview() {
         return
       }
 
-      // Clear session storage
+      // Clear session storage and IndexedDB
       sessionStorage.removeItem('propertyFormStep1')
       sessionStorage.removeItem('propertyFormStep2')
       sessionStorage.removeItem('propertyFormStep3')
+      
+      // Clear all images from IndexedDB
+      await clearAllImagesFromDB()
 
       // Redirect to success page with property ID
       window.location.href = `/list-property/success?id=${insertedData[0].id}`
