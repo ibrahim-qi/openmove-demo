@@ -12,16 +12,39 @@ export default function ListPropertyReview() {
   const [step2Data, setStep2Data] = useState<Record<string, any> | null>(null)
   const [step3Data, setStep3Data] = useState<Record<string, any> | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([])
+  const [isLoadingImages, setIsLoadingImages] = useState(true)
 
   useEffect(() => {
-    // Load all steps data from sessionStorage
-    const savedStep1 = sessionStorage.getItem('propertyFormStep1')
-    const savedStep2 = sessionStorage.getItem('propertyFormStep2')
-    const savedStep3 = sessionStorage.getItem('propertyFormStep3')
+    const loadData = async () => {
+      // Load all steps data from sessionStorage
+      const savedStep1 = sessionStorage.getItem('propertyFormStep1')
+      const savedStep2 = sessionStorage.getItem('propertyFormStep2')
+      const savedStep3 = sessionStorage.getItem('propertyFormStep3')
+      
+      if (savedStep1) setStep1Data(JSON.parse(savedStep1))
+      if (savedStep3) setStep3Data(JSON.parse(savedStep3))
+      
+      if (savedStep2) {
+        const step2 = JSON.parse(savedStep2)
+        setStep2Data(step2)
+        
+        // Load images from IndexedDB and create preview URLs
+        if (step2.imageIds?.length) {
+          try {
+            const imageData = await getImagesFromDB(step2.imageIds)
+            const previewUrls = imageData.map(img => img.base64)
+            setImagePreviewUrls(previewUrls)
+          } catch (error) {
+            console.error('Error loading images from IndexedDB:', error)
+          }
+        }
+      }
+      
+      setIsLoadingImages(false)
+    }
     
-    if (savedStep1) setStep1Data(JSON.parse(savedStep1))
-    if (savedStep2) setStep2Data(JSON.parse(savedStep2))
-    if (savedStep3) setStep3Data(JSON.parse(savedStep3))
+    loadData()
   }, [])
 
   const handleBackToEdit = () => {
@@ -241,9 +264,16 @@ export default function ListPropertyReview() {
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
             {/* Image Gallery */}
             <div className="relative h-64 bg-gray-200">
-              {step2Data.imagePreviewUrls && step2Data.imagePreviewUrls.length > 0 ? (
+              {isLoadingImages ? (
+                <div className="w-full h-full flex items-center justify-center text-gray-500">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600 mx-auto mb-2"></div>
+                    <p>Loading images...</p>
+                  </div>
+                </div>
+              ) : imagePreviewUrls.length > 0 ? (
                 <img 
-                  src={step2Data.imagePreviewUrls[0]} 
+                  src={imagePreviewUrls[0]} 
                   alt="Property"
                   className="w-full h-full object-cover"
                 />
