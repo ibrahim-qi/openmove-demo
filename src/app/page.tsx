@@ -106,11 +106,11 @@ export default function Home() {
       <section className="bg-white py-12 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
               Sell Your Property
               <span className="block text-primary-500">Without Estate Agents</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-8 px-4">
               List and manage property sales independently, removing the need for traditional estate agents. 
               Save thousands on commission fees.
             </p>
@@ -170,37 +170,37 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Save Money With Openmove
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg sm:text-xl text-gray-600 px-4">
               See how much you could save by selling your property directly
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Traditional Estate Agent */}
-            <div className="bg-gray-500 text-white p-8 rounded-lg">
+            <div className="bg-gray-500 text-white p-6 sm:p-8 rounded-lg">
               <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold mb-2">Traditional Estate Agent</h3>
-                <p className="text-gray-200">Commission-based fees</p>
+                <h3 className="text-xl sm:text-2xl font-bold mb-2">Traditional Estate Agent</h3>
+                <p className="text-gray-200 text-sm sm:text-base">Commission-based fees</p>
               </div>
               
               <div className="space-y-4">
-                <div className="flex justify-between text-lg">
+                <div className="flex justify-between text-base sm:text-lg">
                   <span>Property Value:</span>
                   <span className="font-semibold">£400,000</span>
                 </div>
-                <div className="flex justify-between text-lg">
+                <div className="flex justify-between text-base sm:text-lg">
                   <span>Commission (1.5%):</span>
                   <span className="font-semibold">£6,000</span>
                 </div>
-                <div className="flex justify-between text-lg">
+                <div className="flex justify-between text-base sm:text-lg">
                   <span>Marketing:</span>
                   <span className="font-semibold">£500</span>
                 </div>
                 <div className="border-t border-gray-400 pt-4">
-                  <div className="flex justify-between text-xl font-bold">
+                  <div className="flex justify-between text-lg sm:text-xl font-bold">
                     <span>Total Cost:</span>
                     <span>£6,500</span>
                   </div>
@@ -209,27 +209,27 @@ export default function Home() {
             </div>
 
             {/* Openmove */}
-            <div className="bg-gradient-to-r from-primary-500 to-primary-700 text-white p-8 rounded-lg shadow-lg">
+            <div className="bg-gradient-to-r from-primary-500 to-primary-700 text-white p-6 sm:p-8 rounded-lg shadow-lg">
               <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold mb-2">Openmove</h3>
-                <p className="text-white/90">Fixed transparent fees</p>
+                <h3 className="text-xl sm:text-2xl font-bold mb-2">Openmove</h3>
+                <p className="text-white/90 text-sm sm:text-base">Fixed transparent fees</p>
               </div>
               
               <div className="space-y-4">
-                <div className="flex justify-between text-lg">
+                <div className="flex justify-between text-base sm:text-lg">
                   <span>Property Value:</span>
                   <span className="font-semibold">£400,000</span>
                 </div>
-                <div className="flex justify-between text-lg">
+                <div className="flex justify-between text-base sm:text-lg">
                   <span>Listing Fee:</span>
                   <span className="font-semibold">£10</span>
                 </div>
-                <div className="flex justify-between text-lg">
+                <div className="flex justify-between text-base sm:text-lg">
                   <span>Marketing:</span>
                   <span className="font-semibold">£0</span>
                 </div>
                 <div className="border-t border-white/30 pt-4">
-                  <div className="flex justify-between text-xl font-bold">
+                  <div className="flex justify-between text-lg sm:text-xl font-bold">
                     <span>Total Cost:</span>
                     <span>£10</span>
                   </div>

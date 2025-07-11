@@ -102,7 +102,7 @@ export default function ListPropertyStep1() {
           </h1>
           
           {/* Progress indicators */}
-          <div className="flex items-center justify-center space-x-4 mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:space-x-4 mb-8">
             <div className="flex items-center">
               <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-semibold text-sm">1</span>
@@ -124,7 +124,7 @@ export default function ListPropertyStep1() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-8">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Tell us about your property
           </h2>
@@ -134,10 +134,10 @@ export default function ListPropertyStep1() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               Is your property...
             </h3>
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:space-x-4">
               <button
                 onClick={() => setFormData(prev => ({ ...prev, listing_type: 'sale' }))}
-                className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+                className={`px-6 py-3 rounded-lg font-semibold transition-colors flex-1 ${
                   formData.listing_type === 'sale'
                     ? 'bg-pink-600 text-white'
                     : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
@@ -147,7 +147,7 @@ export default function ListPropertyStep1() {
               </button>
               <button
                 onClick={() => setFormData(prev => ({ ...prev, listing_type: 'rent' }))}
-                className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+                className={`px-6 py-3 rounded-lg font-semibold transition-colors flex-1 ${
                   formData.listing_type === 'rent'
                     ? 'bg-pink-600 text-white'
                     : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
