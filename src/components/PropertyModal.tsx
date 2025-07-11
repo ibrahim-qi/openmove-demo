@@ -2,7 +2,7 @@
 
 import { X, MapPin, Bed, Bath, Home, Phone, Mail, Heart } from 'lucide-react';
 import Image from 'next/image';
-import { Property } from '@/data/properties';
+import { Property } from '@/lib/supabase';
 
 interface PropertyModalProps {
   property: Property | null;
@@ -27,6 +27,12 @@ export default function PropertyModal({ property, isOpen, onClose }: PropertyMod
       month: 'long', 
       year: 'numeric' 
     });
+  };
+
+  const getFullAddress = (property: Property) => {
+    return [property.address_line_1, property.address_line_2, property.city, property.postcode]
+      .filter(Boolean)
+      .join(', ');
   };
 
   return (
@@ -57,21 +63,21 @@ export default function PropertyModal({ property, isOpen, onClose }: PropertyMod
               />
               
               {/* Status Badge */}
-              {property.status === 'under_offer' && (
-                <div className="absolute top-4 left-4 bg-yellow-500 text-white px-3 py-1 rounded text-sm font-semibold">
-                  Under Offer
-                </div>
-              )}
-              
               {property.status === 'sold' && (
                 <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded text-sm font-semibold">
                   Sold STC
                 </div>
               )}
+              
+              {property.status === 'rented' && (
+                <div className="absolute top-4 left-4 bg-yellow-500 text-white px-3 py-1 rounded text-sm font-semibold">
+                  Rented
+                </div>
+              )}
 
               {/* Listing Type Badge */}
               <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded text-sm font-semibold">
-                {property.listingType === 'rent' ? 'To Rent' : 'For Sale'}
+                {property.listing_type === 'rent' ? 'To Rent' : 'For Sale'}
               </div>
             </div>
           </div>
@@ -82,7 +88,7 @@ export default function PropertyModal({ property, isOpen, onClose }: PropertyMod
             <div className="lg:col-span-2">
               <div className="mb-6">
                 <h3 className="text-3xl font-bold text-gray-900 mb-2">
-                  {formatPrice(property.price, property.listingType)}
+                  {formatPrice(property.price, property.listing_type)}
                 </h3>
                 <h4 className="text-xl font-semibold text-gray-800 mb-2">
                   {property.title}
@@ -90,7 +96,7 @@ export default function PropertyModal({ property, isOpen, onClose }: PropertyMod
                 <div className="flex items-start text-gray-600 mb-4">
                   <MapPin size={18} className="mt-0.5 mr-2 flex-shrink-0" />
                   <span>
-                    {property.address}, {property.city}, {property.postcode}
+                    {getFullAddress(property)}
                   </span>
                 </div>
               </div>
@@ -107,7 +113,7 @@ export default function PropertyModal({ property, isOpen, onClose }: PropertyMod
                 </div>
                 <div className="flex items-center">
                   <Home size={18} className="mr-2" />
-                  <span className="font-medium">{property.propertyType}</span>
+                  <span className="font-medium">{property.type}</span>
                 </div>
               </div>
 
@@ -141,13 +147,13 @@ export default function PropertyModal({ property, isOpen, onClose }: PropertyMod
                 <div className="space-y-3">
                   <div>
                     <span className="text-sm text-gray-600">Listed by</span>
-                    <p className="font-medium text-gray-900">{property.sellerName}</p>
+                    <p className="font-medium text-gray-900">Property Owner</p>
                   </div>
                   
                   <div className="space-y-2">
                     <button className="w-full bg-primary-500 text-white py-3 px-4 rounded-lg hover:bg-primary-600 transition-colors font-medium flex items-center justify-center">
                       <Phone size={18} className="mr-2" />
-                      Call {property.sellerPhone}
+                      Call 07XXX XXXXXX
                     </button>
                     <button className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium flex items-center justify-center">
                       <Mail size={18} className="mr-2" />
@@ -167,20 +173,21 @@ export default function PropertyModal({ property, isOpen, onClose }: PropertyMod
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Listed on:</span>
-                    <span className="font-medium">{formatDate(property.dateAdded)}</span>
+                    <span className="font-medium">{formatDate(property.created_at)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Property Type:</span>
-                    <span className="font-medium">{property.propertyType}</span>
+                    <span className="font-medium">{property.type}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Status:</span>
                     <span className={`font-medium capitalize ${
-                      property.status === 'available' ? 'text-green-600' :
-                      property.status === 'under_offer' ? 'text-yellow-600' :
-                      'text-red-600'
+                      property.status === 'active' ? 'text-green-600' :
+                      property.status === 'sold' ? 'text-red-600' :
+                      property.status === 'rented' ? 'text-yellow-600' :
+                      'text-gray-600'
                     }`}>
-                      {property.status.replace('_', ' ')}
+                      {property.status === 'active' ? 'Available' : property.status.replace('_', ' ')}
                     </span>
                   </div>
                 </div>

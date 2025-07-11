@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { MapPin, Bed, Bath, Home, Calendar, Phone, Mail } from 'lucide-react';
-import { Property } from '@/data/properties';
+import { Property } from '@/lib/supabase';
 import PropertyModal from './PropertyModal';
 
 interface PropertyCardProps {
@@ -32,6 +32,12 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
     return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
   };
 
+  const getFullAddress = (property: Property) => {
+    return [property.address_line_1, property.address_line_2, property.city, property.postcode]
+      .filter(Boolean)
+      .join(', ');
+  };
+
   return (
     <>
       <div className={`bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden ${className}`}>
@@ -45,22 +51,28 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           
-          {/* Status Badge */}
-          {property.status === 'under_offer' && (
-            <div className="absolute top-3 left-3 bg-yellow-500 text-white px-2 py-1 rounded text-sm font-semibold">
-              Under Offer
-            </div>
-          )}
-          
+          {/* Status Badge - Only show if not active */}
           {property.status === 'sold' && (
             <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold">
               Sold STC
             </div>
           )}
+          
+          {property.status === 'rented' && (
+            <div className="absolute top-3 left-3 bg-yellow-500 text-white px-2 py-1 rounded text-sm font-semibold">
+              Rented
+            </div>
+          )}
+          
+          {property.status === 'withdrawn' && (
+            <div className="absolute top-3 left-3 bg-gray-500 text-white px-2 py-1 rounded text-sm font-semibold">
+              Withdrawn
+            </div>
+          )}
 
           {/* Listing Type Badge */}
           <div className="absolute top-3 right-3 bg-primary-500 text-white px-2 py-1 rounded text-sm font-semibold">
-            {property.listingType === 'rent' ? 'To Rent' : 'For Sale'}
+            {property.listing_type === 'rent' ? 'To Rent' : 'For Sale'}
           </div>
         </div>
 
@@ -69,7 +81,7 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
           {/* Price */}
           <div className="mb-2">
             <h3 className="text-2xl font-bold text-gray-900">
-              {formatPrice(property.price, property.listingType)}
+              {formatPrice(property.price, property.listing_type)}
             </h3>
           </div>
 
@@ -82,7 +94,7 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
           <div className="flex items-start text-gray-600 mb-3">
             <MapPin size={16} className="mt-0.5 mr-2 flex-shrink-0" />
             <span className="text-sm">
-              {property.address}, {property.city}, {property.postcode}
+              {getFullAddress(property)}
             </span>
           </div>
 
@@ -98,7 +110,7 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
             </div>
             <div className="flex items-center">
               <Home size={16} className="mr-1" />
-              <span className="text-sm">{property.propertyType}</span>
+              <span className="text-sm">{property.type}</span>
             </div>
           </div>
 
@@ -122,7 +134,7 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
           {/* Date Added */}
           <div className="flex items-center text-gray-500 text-sm mb-4">
             <Calendar size={14} className="mr-1" />
-            <span>Listed {formatDate(property.dateAdded)}</span>
+            <span>Listed {formatDate(property.created_at)}</span>
           </div>
 
           {/* Action Buttons */}

@@ -1,25 +1,93 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SearchBar from '@/components/SearchBar';
 import PropertyCard from '@/components/PropertyCard';
-import { getFeaturedProperties, searchProperties } from '@/data/properties';
+import { supabase, Property } from '@/lib/supabase';
 import { MessageCircle, Zap, Shield } from 'lucide-react';
 
 export default function Home() {
-  const [searchResults, setSearchResults] = useState(getFeaturedProperties());
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [searchResults, setSearchResults] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState('newest');
 
-  const handleSearch = (query: string) => {
-    const results = searchProperties(query);
-    setSearchResults(results);
+  useEffect(() => {
+    fetchProperties();
+  }, []);
+
+  const fetchProperties = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('status', 'active')
+        .order('created_at', { ascending: false })
+        .limit(12);
+
+      if (error) {
+        console.error('Error fetching properties:', error);
+        return;
+      }
+
+      setProperties(data || []);
+      setSearchResults(data || []);
+    } catch (error) {
+      console.error('Error fetching properties:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = async (query: string) => {
+    if (!query.trim()) {
+      setSearchResults(properties);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('status', 'active')
+        .or(`title.ilike.%${query}%,city.ilike.%${query}%,postcode.ilike.%${query}%,type.ilike.%${query}%`)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error searching properties:', error);
+        return;
+      }
+
+      setSearchResults(data || []);
+    } catch (error) {
+      console.error('Error searching properties:', error);
+    }
   };
 
   const handleSort = (value: string) => {
     setSortBy(value);
-    // Implement sorting logic here if needed
+    const sortedResults = [...searchResults];
+    
+    switch (value) {
+      case 'price_low':
+        sortedResults.sort((a, b) => a.price - b.price);
+        break;
+      case 'price_high':
+        sortedResults.sort((a, b) => b.price - a.price);
+        break;
+      case 'bedrooms':
+        sortedResults.sort((a, b) => b.bedrooms - a.bedrooms);
+        break;
+      case 'newest':
+      default:
+        sortedResults.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        break;
+    }
+    
+    setSearchResults(sortedResults);
   };
 
   return (
@@ -198,11 +266,26 @@ export default function Home() {
           </div>
 
           {/* Properties Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {searchResults.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="bg-white rounded-lg shadow-md h-96 animate-pulse">
+                  <div className="h-48 bg-gray-200 rounded-t-lg"></div>
+                  <div className="p-4 space-y-3">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-full"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {searchResults.map((property) => (
+                <PropertyCard key={property.id} property={property} />
+              ))}
+            </div>
+          )}
 
           {/* Load More */}
           <div className="text-center mt-12">
@@ -222,9 +305,12 @@ export default function Home() {
           <p className="text-xl text-white/90 mb-8">
             Join thousands of homeowners who have saved money by selling directly
           </p>
-          <button className="bg-white text-primary-500 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg">
+          <Link 
+            href="/list-property"
+            className="bg-white text-primary-500 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg inline-block"
+          >
             List Your Property for £10
-          </button>
+          </Link>
         </div>
       </section>
 

@@ -52,9 +52,12 @@ export default function Header() {
               <User size={20} />
               <span>Sign In</span>
             </button>
-            <button className="bg-gradient-to-r from-primary-500 to-primary-700 text-white px-6 py-2 rounded-lg font-semibold hover:from-primary-600 hover:to-primary-800 transition-all duration-200 shadow-lg">
+            <Link 
+              href="/list-property"
+              className="bg-gradient-to-r from-primary-500 to-primary-700 text-white px-6 py-2 rounded-lg font-semibold hover:from-primary-600 hover:to-primary-800 transition-all duration-200 shadow-lg"
+            >
               List Your Property
-            </button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -101,9 +104,12 @@ export default function Header() {
                   <User size={20} />
                   <span>Sign In</span>
                 </button>
-                <button className="mt-2 mx-3 bg-gradient-to-r from-primary-500 to-primary-700 text-white px-6 py-2 rounded-lg font-semibold w-[calc(100%-1.5rem)] hover:from-primary-600 hover:to-primary-800 transition-all duration-200">
+                <Link 
+                  href="/list-property"
+                  className="mt-2 mx-3 bg-gradient-to-r from-primary-500 to-primary-700 text-white px-6 py-2 rounded-lg font-semibold w-[calc(100%-1.5rem)] hover:from-primary-600 hover:to-primary-800 transition-all duration-200 block text-center"
+                >
                   List Your Property
-                </button>
+                </Link>
               </div>
             </div>
           </div>
