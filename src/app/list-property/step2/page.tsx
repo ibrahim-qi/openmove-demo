@@ -21,6 +21,39 @@ export default function ListPropertyStep2() {
     setDebugInfo(prev => [...prev, `${new Date().toLocaleTimeString()}: ${message}`])
   }
 
+  const compressImage = (file: File, maxWidth: number = 1200, quality: number = 0.8): Promise<{base64: string, name: string, type: string}> => {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      const img = new Image()
+      
+      img.onload = () => {
+        // Calculate new dimensions
+        let { width, height } = img
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width
+          width = maxWidth
+        }
+        
+        canvas.width = width
+        canvas.height = height
+        
+        // Draw and compress
+        ctx?.drawImage(img, 0, 0, width, height)
+        const compressedBase64 = canvas.toDataURL('image/jpeg', quality)
+        
+        resolve({
+          base64: compressedBase64,
+          name: file.name,
+          type: 'image/jpeg'
+        })
+      }
+      
+      img.onerror = () => reject(new Error(`Failed to load image: ${file.name}`))
+      img.src = URL.createObjectURL(file)
+    })
+  }
+
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     if (files) {
@@ -35,38 +68,26 @@ export default function ListPropertyStep2() {
       const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file))
       addDebugInfo(`✅ Created ${newPreviewUrls.length} preview URLs`)
       
-      // Convert files to base64 for storage
+      // Compress and convert files to base64 for storage
+      addDebugInfo(`🔄 Starting image compression...`)
       const imageDataPromises = newFiles.map((file, index) => {
-        return new Promise<{base64: string, name: string, type: string}>((resolve, reject) => {
-          const reader = new FileReader()
-          
-          reader.onload = (e) => {
-            addDebugInfo(`✅ File ${index + 1} (${file.name}) loaded successfully`)
-            resolve({
-              base64: e.target?.result as string,
-              name: file.name,
-              type: file.type
-            })
-          }
-          
-          reader.onerror = (e) => {
-            addDebugInfo(`❌ Error reading file ${index + 1} (${file.name})`)
-            reject(new Error(`Failed to read file: ${file.name}`))
-          }
-          
-          reader.onabort = () => {
-            addDebugInfo(`⚠️ File reading aborted for ${file.name}`)
-            reject(new Error(`Reading aborted: ${file.name}`))
-          }
-          
-          addDebugInfo(`🔄 Starting to read file ${index + 1}: ${file.name}`)
-          reader.readAsDataURL(file)
-        })
+        addDebugInfo(`🔄 Compressing file ${index + 1}: ${file.name}`)
+        return compressImage(file)
+          .then(result => {
+            const originalSize = (file.size / 1024 / 1024).toFixed(2)
+            const compressedSize = (result.base64.length / 1024 / 1024 * 0.75).toFixed(2) // rough estimate
+            addDebugInfo(`✅ File ${index + 1} compressed: ${originalSize}MB → ~${compressedSize}MB`)
+            return result
+          })
+          .catch(error => {
+            addDebugInfo(`❌ Error compressing file ${index + 1} (${file.name}): ${error}`)
+            throw error
+          })
       })
       
       try {
         const newImageData = await Promise.all(imageDataPromises)
-        addDebugInfo(`🎉 All ${newImageData.length} files processed successfully!`)
+        addDebugInfo(`🎉 All ${newImageData.length} files compressed successfully!`)
         
         setFormData(prev => ({
           ...prev,
