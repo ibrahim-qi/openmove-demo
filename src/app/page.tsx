@@ -9,6 +9,9 @@ import PropertyCard from '@/components/PropertyCard';
 import { supabase, Property } from '@/lib/supabase';
 import { MessageCircle, Zap, Shield } from 'lucide-react';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export default function Home() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [searchResults, setSearchResults] = useState<Property[]>([]);

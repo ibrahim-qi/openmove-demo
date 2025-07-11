@@ -1,12 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { CheckCircle, Share, MapPin, Bed, Bath, Square } from 'lucide-react'
 
-export default function ListPropertySuccess() {
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
+function SuccessContent() {
   const searchParams = useSearchParams()
   const propertyId = searchParams.get('id')
   const [property, setProperty] = useState<Record<string, any> | null>(null)
@@ -200,5 +203,20 @@ export default function ListPropertySuccess() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ListPropertySuccess() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <SuccessContent />
+    </Suspense>
   )
 } 

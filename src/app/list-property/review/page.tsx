@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { MapPin, Bed, Bath, Square, Heart } from 'lucide-react'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export default function ListPropertyReview() {
   const [step1Data, setStep1Data] = useState<Record<string, any> | null>(null)
   const [step2Data, setStep2Data] = useState<Record<string, any> | null>(null)
