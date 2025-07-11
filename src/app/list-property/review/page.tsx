@@ -31,6 +31,16 @@ export default function ListPropertyReview() {
   const uploadImagesToSupabase = async (imageData: Array<{base64: string, name: string, type: string}>) => {
     const uploadedUrls: string[] = []
     
+    // Check if Supabase is properly configured
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    
+    if (!supabaseUrl || supabaseUrl === 'http://localhost:3000' || !supabaseKey || supabaseKey === 'dummy-key') {
+      console.error('Supabase not configured properly. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local')
+      alert('Image upload not configured. Please set up Supabase environment variables.')
+      return []
+    }
+    
     for (const image of imageData) {
       try {
         // Convert base64 to File object
@@ -49,6 +59,11 @@ export default function ListPropertyReview() {
 
         if (error) {
           console.error('Error uploading image:', error)
+          console.error('Supabase config:', { 
+            url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+            hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY 
+          })
+          // Skip this image and continue
           continue
         }
 
@@ -57,6 +72,7 @@ export default function ListPropertyReview() {
           .from('property-images')
           .getPublicUrl(fileName)
 
+        console.log('Generated public URL:', publicUrl)
         uploadedUrls.push(publicUrl)
       } catch (error) {
         console.error('Error processing image:', error)
@@ -100,6 +116,9 @@ export default function ListPropertyReview() {
         images: imageUrls,
         property_tenure: 'Freehold'
       }
+
+      console.log('Property data being saved:', propertyData)
+      console.log('Image URLs:', imageUrls)
 
       // Insert into Supabase
       const { data: insertedData, error } = await supabase

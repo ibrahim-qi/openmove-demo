@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { MapPin, Bed, Bath, Home, Calendar, Phone, Mail } from 'lucide-react';
+import { MapPin, Bed, Bath, Home, Calendar } from 'lucide-react';
 import { Property } from '@/lib/supabase';
 import PropertyModal from './PropertyModal';
 
@@ -42,14 +42,40 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
     <>
       <div className={`bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden ${className}`}>
         {/* Property Image */}
-        <div className="relative h-48 w-full">
-          <Image
-            src={property.images[0]}
-            alt={property.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+        <div className="relative h-64 w-full">
+          {property.images && property.images.length > 0 && !property.images[0].includes('example.com') ? (
+            <Image
+              src={property.images[0]}
+              alt={property.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              onError={(e) => {
+                console.log('Image failed to load:', property.images[0]);
+                // Replace the failed image with a fallback
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = `
+                    <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <div class="text-center text-gray-500">
+                        <div class="mx-auto mb-2">🏠</div>
+                        <p class="text-sm">Image unavailable</p>
+                      </div>
+                    </div>
+                  `;
+                }
+              }}
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+              <div className="text-center text-gray-500">
+                <Home size={48} className="mx-auto mb-2" />
+                <p className="text-sm">No image available</p>
+              </div>
+            </div>
+          )}
           
           {/* Status Badge - Only show if not active */}
           {property.status === 'sold' && (
@@ -138,18 +164,12 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
           </div>
 
           {/* Action Buttons */}
-          <div className="flex space-x-2">
+          <div>
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="flex-1 bg-primary-500 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition-colors font-medium"
+              className="w-full bg-primary-500 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition-colors font-medium"
             >
               View Details
-            </button>
-            <button className="flex items-center justify-center bg-gray-100 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors">
-              <Phone size={18} />
-            </button>
-            <button className="flex items-center justify-center bg-gray-100 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors">
-              <Mail size={18} />
             </button>
           </div>
         </div>

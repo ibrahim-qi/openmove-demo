@@ -1,6 +1,6 @@
 'use client';
 
-import { X, MapPin, Bed, Bath, Home, Phone, Mail, Heart } from 'lucide-react';
+import { X, MapPin, Bed, Bath, Home, Heart } from 'lucide-react';
 import Image from 'next/image';
 import { Property } from '@/lib/supabase';
 
@@ -141,25 +141,12 @@ export default function PropertyModal({ property, isOpen, onClose }: PropertyMod
 
             {/* Sidebar */}
             <div className="space-y-6">
-              {/* Contact Seller */}
+              {/* Property Owner Info */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h5 className="text-lg font-semibold text-gray-900 mb-3">Contact Seller</h5>
-                <div className="space-y-3">
-                  <div>
-                    <span className="text-sm text-gray-600">Listed by</span>
-                    <p className="font-medium text-gray-900">Property Owner</p>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <button className="w-full bg-primary-500 text-white py-3 px-4 rounded-lg hover:bg-primary-600 transition-colors font-medium flex items-center justify-center">
-                      <Phone size={18} className="mr-2" />
-                      Call 07XXX XXXXXX
-                    </button>
-                    <button className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium flex items-center justify-center">
-                      <Mail size={18} className="mr-2" />
-                      Send Message
-                    </button>
-                  </div>
+                <h5 className="text-lg font-semibold text-gray-900 mb-3">Listed by</h5>
+                <div>
+                  <p className="font-medium text-gray-900">Property Owner</p>
+                  <p className="text-sm text-gray-600 mt-1">Direct from owner - no agent fees</p>
                 </div>
               </div>
 

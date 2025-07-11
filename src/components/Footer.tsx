@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -16,20 +16,6 @@ export default function Footer() {
               The innovative peer-to-peer property platform that enables homeowners to list and sell 
               their properties directly, saving thousands on estate agent fees.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-primary-500 transition-colors">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-primary-500 transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-primary-500 transition-colors">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-primary-500 transition-colors">
-                <Linkedin size={20} />
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -100,12 +86,10 @@ export default function Footer() {
         {/* Contact Info */}
         <div className="py-8 border-t border-gray-800">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex items-center space-x-3">
-              <Mail className="text-primary-500" size={20} />
+            <div className="flex items-center">
               <span className="text-gray-300">support@openmove.co.uk</span>
             </div>
-            <div className="flex items-center space-x-3">
-              <Phone className="text-primary-500" size={20} />
+            <div className="flex items-center">
               <span className="text-gray-300">0800 123 4567</span>
             </div>
             <div className="flex items-center space-x-3">
