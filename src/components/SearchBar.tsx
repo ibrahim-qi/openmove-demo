@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Search, MapPin, X } from 'lucide-react';
 
 interface SearchBarProps {
-  onSearch: (query: string, filters?: any) => void;
+  onSearch: (query: string, filters?: SearchFilters) => void;
   placeholder?: string;
   className?: string;
 }
@@ -129,7 +129,7 @@ export default function SearchBar({
             <div className="p-6 space-y-6">
               {/* Purpose Toggle */}
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-3">I'm looking</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-3">I&apos;m looking</h3>
                 <div className="flex space-x-0 bg-gray-100 rounded-lg p-1">
                   <button
                     onClick={() => setFilters(prev => ({ ...prev, purpose: 'buy' }))}

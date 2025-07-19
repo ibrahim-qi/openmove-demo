@@ -8,6 +8,22 @@ import PropertyCard from '@/components/PropertyCard';
 import { supabase, Property } from '@/lib/supabase';
 import { Heart, Clock } from 'lucide-react';
 
+// Define SearchFilters interface to match SearchBar
+interface SearchFilters {
+  purpose: 'buy' | 'rent';
+  location: string;
+  radius: string;
+  priceMin: string;
+  priceMax: string;
+  bedroomsMin: string;
+  bedroomsMax: string;
+  bathroomsMin: string;
+  bathroomsMax: string;
+  propertyTypes: string[];
+  tenureTypes: string[];
+  showSoldSTC: boolean;
+}
+
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
@@ -85,7 +101,7 @@ export default function Home() {
     }
   };
 
-  const handleSearch = async (query: string, filters?: any) => {
+  const handleSearch = async (query: string, filters?: SearchFilters) => {
     // For now, redirect to a search results page
     // You can implement this based on your routing needs
     if (query.trim() || filters) {
