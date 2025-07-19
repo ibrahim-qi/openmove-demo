@@ -32,8 +32,14 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile - Show both button and menu */}
+          <div className="md:hidden flex items-center space-x-3">
+            <Link 
+              href="/list-property"
+              className="bg-gradient-to-r from-primary-500 to-primary-700 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:from-primary-600 hover:to-primary-800 transition-all duration-200 shadow-lg"
+            >
+              List Property
+            </Link>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-700 hover:text-primary-500"
@@ -43,7 +49,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Just Sign In now */}
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-100">
@@ -51,12 +57,6 @@ export default function Header() {
                 <User size={20} />
                 <span>Sign In</span>
               </button>
-              <Link 
-                href="/list-property"
-                className="mt-2 mx-3 bg-gradient-to-r from-primary-500 to-primary-700 text-white px-6 py-2 rounded-lg font-semibold w-[calc(100%-1.5rem)] hover:from-primary-600 hover:to-primary-800 transition-all duration-200 block text-center"
-              >
-                List Your Property
-              </Link>
             </div>
           </div>
         )}
