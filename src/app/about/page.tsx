@@ -31,7 +31,7 @@ export default function AboutPage() {
               Simple. Direct. Revolutionary.
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Skip the estate agents and connect directly with buyers. Here's how it works:
+              Skip the estate agents and connect directly with buyers. Here&apos;s how it works:
             </p>
           </div>
 
@@ -123,7 +123,7 @@ export default function AboutPage() {
               <div className="bg-primary-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
                 <Shield className="h-6 w-6 text-primary-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">You're in Control</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">You&apos;re in Control</h3>
               <p className="text-gray-600">
                 Manage your listing, pricing, and viewings your way.
               </p>
