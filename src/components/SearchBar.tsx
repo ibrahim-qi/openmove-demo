@@ -16,8 +16,23 @@ const animationStyles = `
     }
   }
   
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+  }
+  
   .animate-slide-in {
-    animation: slideIn 0.3s ease-out forwards;
+    animation: slideIn 0.4s ease-out forwards;
+  }
+  
+  .animate-fade-out {
+    animation: fadeOut 0.2s ease-out forwards;
   }
 `;
 
@@ -99,6 +114,7 @@ export default function SearchBar({
   className = "" 
 }: SearchBarProps) {
   const [showFilters, setShowFilters] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const [filters, setFilters] = useState<SearchFilters>({
     purpose: 'buy',
@@ -114,6 +130,18 @@ export default function SearchBar({
     tenureTypes: [],
     showSoldSTC: false
   });
+
+  const handleOpenFilters = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setShowFilters(true);
+      setIsTransitioning(false);
+    }, 200); // Match the fadeOut animation duration
+  };
+
+  const handleCloseFilters = () => {
+    setShowFilters(false);
+  };
 
   const handleSearch = () => {
     onSearch(filters.location, filters);
@@ -217,22 +245,24 @@ export default function SearchBar({
     { value: '4', label: '4+' },
   ];
 
-  return (
+    return (
     <>
       <style dangerouslySetInnerHTML={{ __html: animationStyles }} />
       <div className={`w-full ${className} relative`}>
-      {/* Container that morphs between search bar and modal */}
-      <div className={`bg-white shadow-lg border border-gray-200 transition-all duration-500 ease-in-out ${
-        showFilters 
-          ? 'rounded-lg' 
-          : 'rounded-full hover:shadow-xl cursor-pointer'
-      }`}>
+        {/* Container that morphs between search bar and modal */}
+        <div className={`bg-white shadow-lg border border-gray-200 ${
+          showFilters 
+            ? 'rounded-lg' 
+            : 'rounded-full hover:shadow-xl cursor-pointer'
+        }`}>
         
         {/* Search Bar Content - Show when filters are hidden */}
         {!showFilters && (
           <div 
-            onClick={() => setShowFilters(true)}
-            className="relative flex items-center opacity-100 transform translate-y-0 transition-all duration-300 ease-out"
+            onClick={handleOpenFilters}
+            className={`relative flex items-center ${
+              isTransitioning ? 'animate-fade-out' : 'opacity-100'
+            }`}
           >
             <input
               type="text"
@@ -255,7 +285,7 @@ export default function SearchBar({
           <div className="relative flex items-center justify-center p-6 border-b">
             <h2 className="text-xl font-semibold text-black">Search Properties</h2>
             <button 
-              onClick={() => setShowFilters(false)}
+              onClick={handleCloseFilters}
               className="absolute right-6 text-gray-400 hover:text-gray-600"
             >
               <X className="h-6 w-6" />
