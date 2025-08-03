@@ -221,7 +221,7 @@ export default function ListPropertyStep1() {
 
             <div>
               <h4 className="text-base font-medium text-gray-900 mb-3 text-center">
-                What's your street name? (address line 1)
+                What&apos;s your street name? (address line 1)
               </h4>
               <input
                 type="text"
@@ -234,7 +234,7 @@ export default function ListPropertyStep1() {
 
             <div>
               <h4 className="text-base font-medium text-gray-900 mb-3 text-center">
-                Where's your street located? (address line 2)
+                Where&apos;s your street located? (address line 2)
               </h4>
               <input
                 type="text"
@@ -260,7 +260,7 @@ export default function ListPropertyStep1() {
 
             <div>
               <h4 className="text-base font-medium text-gray-900 mb-3 text-center">
-                What's your postcode?
+                What&apos;s your postcode?
               </h4>
               <input
                 type="text"
@@ -276,7 +276,7 @@ export default function ListPropertyStep1() {
         {/* Space Details */}
         <div className="mb-8">
           <h3 className="text-lg font-semibold text-gray-900 mb-6 text-center">
-            Let's talk about the space
+            Let&apos;s talk about the space
           </h3>
           
           <div className="space-y-6">
@@ -344,7 +344,7 @@ export default function ListPropertyStep1() {
 
             <div>
               <h4 className="text-base font-medium text-gray-900 mb-3 text-center">
-                What's the floor area? (sqm)
+                What&apos;s the floor area? (sqm)
               </h4>
               <input
                 type="number"
