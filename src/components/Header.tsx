@@ -14,7 +14,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="text-2xl font-bold text-primary-500">
-              openmove
+              yoomoove
             </Link>
           </div>
 
@@ -32,14 +32,8 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Mobile - Show both button and menu */}
-          <div className="md:hidden flex items-center space-x-3">
-            <Link 
-              href="/list-property"
-              className="bg-gradient-to-r from-primary-500 to-primary-700 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:from-primary-600 hover:to-primary-800 transition-all duration-200 shadow-lg"
-            >
-              List Property
-            </Link>
+          {/* Mobile - Show hamburger menu */}
+          <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-700 hover:text-primary-500"

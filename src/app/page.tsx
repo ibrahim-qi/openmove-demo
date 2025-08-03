@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SearchBar from '@/components/SearchBar';
@@ -37,68 +38,61 @@ export default function Home() {
   }, []);
 
   const loadSavedProperties = async () => {
-    try {
-      // Get saved property IDs from localStorage
-      const savedIds = JSON.parse(localStorage.getItem('savedProperties') || '[]');
-      
-      if (savedIds.length === 0) {
-        setSavedProperties([]);
-        return;
-      }
-
-      // Fetch the actual property data
-      const { data, error } = await supabase
-        .from('properties')
-        .select('*')
-        .in('id', savedIds)
-        .eq('status', 'active')
-        .limit(10);
-
-      if (error) {
-        console.error('Error fetching saved properties:', error);
-        return;
-      }
-
-      setSavedProperties(data || []);
-    } catch (error) {
-      console.error('Error loading saved properties:', error);
-      setSavedProperties([]);
-    }
+    // Sample data to match Figma design
+    const sampleSavedProperty = {
+      id: 'sample-saved-1',
+      title: '4 Bedroom Detached Home',
+      price: 400000,
+      listing_type: 'sale' as 'sale' | 'rent',
+      address_line_1: 'Church Street',
+      address_line_2: '',
+      city: 'Wedmore',
+      postcode: '',
+      bedrooms: 4,
+      bathrooms: 2,
+      floor_area: 145,
+      type: 'Detached',
+      status: 'active' as 'active' | 'sold' | 'rented' | 'withdrawn',
+      images: ['https://picsum.photos/400/300?random=1'],
+      features: ['Garden', 'Parking', 'Modern'],
+      custom_features: [],
+      created_at: '2025-07-20T00:00:00.000Z',
+      updated_at: '2025-07-20T00:00:00.000Z',
+      user_id: '',
+      description: '',
+      location: { lat: 0, lng: 0 }
+    };
+    
+    setSavedProperties([sampleSavedProperty]);
   };
 
   const loadRecentlyViewedProperties = async () => {
-    try {
-      // Get recently viewed property IDs from localStorage
-      const recentlyViewedIds = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-      
-      if (recentlyViewedIds.length === 0) {
-        setRecentlyViewedProperties([]);
-        return;
-      }
-
-      // Fetch the actual property data
-      const { data, error } = await supabase
-        .from('properties')
-        .select('*')
-        .in('id', recentlyViewedIds)
-        .eq('status', 'active')
-        .limit(10);
-
-      if (error) {
-        console.error('Error fetching recently viewed properties:', error);
-        return;
-      }
-
-      // Maintain the order from localStorage
-      const orderedProperties = recentlyViewedIds
-        .map((id: string) => data?.find(p => p.id === id))
-        .filter(Boolean);
-
-      setRecentlyViewedProperties(orderedProperties);
-    } catch (error) {
-      console.error('Error loading recently viewed properties:', error);
-      setRecentlyViewedProperties([]);
-    }
+    // Sample data to match Figma design
+    const sampleRecentProperty = {
+      id: 'sample-recent-1',
+      title: '3 Bedroom Semi-Detached Home',
+      price: 350000,
+      listing_type: 'sale' as 'sale' | 'rent',
+      address_line_1: 'Church Street',
+      address_line_2: '',
+      city: 'Wedmore',
+      postcode: '',
+      bedrooms: 3,
+      bathrooms: 2,
+      floor_area: 100,
+      type: 'Semi-Detached',
+      status: 'active' as 'active' | 'sold' | 'rented' | 'withdrawn',
+      images: ['https://picsum.photos/400/300?random=2'],
+      features: ['Garden', 'Parking'],
+      custom_features: [],
+      created_at: '2025-07-15T00:00:00.000Z',
+      updated_at: '2025-07-15T00:00:00.000Z',
+      user_id: '',
+      description: '',
+      location: { lat: 0, lng: 0 }
+    };
+    
+    setRecentlyViewedProperties([sampleRecentProperty]);
   };
 
   const handleSearch = async (query: string, filters?: SearchFilters) => {
@@ -111,34 +105,36 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
       {/* Search Section */}
-      <section className="bg-white py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
+      <section className="bg-gray-50 py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto mb-6">
             <SearchBar 
               onSearch={handleSearch}
-              placeholder="Search properties..."
+              placeholder="Search properties"
             />
+          </div>
+          
+          {/* List Your Property Button - Centered */}
+          <div className="text-center">
+            <Link 
+              href="/list-property"
+              className="bg-gradient-to-r from-primary-500 to-primary-700 text-white px-10 py-3.5 rounded-full font-semibold text-base hover:from-primary-600 hover:to-primary-800 transition-all duration-200 shadow-lg inline-block"
+            >
+              List Your Property
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Saved Properties */}
-      <section className="py-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-2">
-              <Heart className="h-6 w-6 text-primary-500" />
-              <h2 className="text-2xl font-bold text-gray-900">Saved Properties</h2>
-            </div>
-            {savedProperties.length > 0 && (
-              <button className="text-primary-500 hover:text-primary-600 font-medium">
-                View All
-              </button>
-            )}
+      <section className="py-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-4 px-4">
+            <h2 className="text-lg font-bold text-gray-900">Saved Properties</h2>
           </div>
 
           {savedProperties.length === 0 ? (
@@ -148,12 +144,11 @@ export default function Home() {
               <p className="text-gray-500">Start saving properties you love to see them here</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <div className="flex space-x-6 pb-4" style={{ minWidth: 'max-content' }}>
+            <div className="px-4">
+              {/* Mobile: Stack vertically, Desktop: Grid layout */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {savedProperties.map((property) => (
-                  <div key={property.id} className="w-80 flex-shrink-0">
-                    <PropertyCard property={property} />
-                  </div>
+                  <PropertyCard key={property.id} property={property} />
                 ))}
               </div>
             </div>
@@ -162,18 +157,10 @@ export default function Home() {
       </section>
 
       {/* Recently Viewed Properties */}
-      <section className="py-8 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-2">
-              <Clock className="h-6 w-6 text-primary-500" />
-              <h2 className="text-2xl font-bold text-gray-900">Recently Viewed</h2>
-            </div>
-            {recentlyViewedProperties.length > 0 && (
-              <button className="text-primary-500 hover:text-primary-600 font-medium">
-                View All
-              </button>
-            )}
+      <section className="py-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-6 px-4">
+            <h2 className="text-xl font-bold text-gray-900">Recently Viewed</h2>
           </div>
 
           {recentlyViewedProperties.length === 0 ? (
@@ -183,12 +170,11 @@ export default function Home() {
               <p className="text-gray-500">Properties you view will appear here for quick access</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <div className="flex space-x-6 pb-4" style={{ minWidth: 'max-content' }}>
+            <div className="px-4">
+              {/* Mobile: Stack vertically, Desktop: Grid layout */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {recentlyViewedProperties.map((property) => (
-                  <div key={property.id} className="w-80 flex-shrink-0">
-                    <PropertyCard property={property} />
-                  </div>
+                  <PropertyCard key={property.id} property={property} />
                 ))}
               </div>
             </div>

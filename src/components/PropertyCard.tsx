@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { MapPin, Bed, Bath, Home, Calendar } from 'lucide-react';
+import { MapPin, Bed, Bath, Home, Calendar, Heart } from 'lucide-react';
 import { Property } from '@/lib/supabase';
 import PropertyModal from './PropertyModal';
 
@@ -40,9 +40,9 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
 
   return (
     <>
-      <div className={`bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden ${className}`}>
+      <div className={`bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden w-full ${className}`}>
         {/* Property Image */}
-        <div className="relative h-64 w-full">
+        <div className="relative h-48 md:h-56 w-full">
           {property.images && property.images.length > 0 && !property.images[0].includes('example.com') ? (
             <Image
               src={property.images[0]}
@@ -52,7 +52,6 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               onError={(e) => {
                 console.log('Image failed to load:', property.images[0]);
-                // Replace the failed image with a fallback
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
                 const parent = target.parentElement;
@@ -77,100 +76,62 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
             </div>
           )}
           
-          {/* Status Badge - Only show if not active */}
-          {property.status === 'sold' && (
-            <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold">
-              Sold STC
+          {/* Heart Icon - Top Right */}
+          <div className="absolute top-3 right-3">
+            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
+              <Heart size={20} className="text-primary-500 fill-primary-500" />
             </div>
-          )}
-          
-          {property.status === 'rented' && (
-            <div className="absolute top-3 left-3 bg-yellow-500 text-white px-2 py-1 rounded text-sm font-semibold">
-              Rented
-            </div>
-          )}
-          
-          {property.status === 'withdrawn' && (
-            <div className="absolute top-3 left-3 bg-gray-500 text-white px-2 py-1 rounded text-sm font-semibold">
-              Withdrawn
-            </div>
-          )}
-
-          {/* Listing Type Badge */}
-          <div className="absolute top-3 right-3 bg-primary-500 text-white px-2 py-1 rounded text-sm font-semibold">
-            {property.listing_type === 'rent' ? 'To Rent' : 'For Sale'}
           </div>
         </div>
 
         {/* Property Details */}
-        <div className="p-4">
-          {/* Price */}
-          <div className="mb-2">
-            <h3 className="text-2xl font-bold text-gray-900">
-              {formatPrice(property.price, property.listing_type)}
-            </h3>
+        <div className="p-5">
+          {/* Title and Price */}
+          <div className="flex justify-between items-start mb-3">
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+                {property.bedrooms} Bedroom<br />
+                {property.type} Home
+              </h3>
+            </div>
+            <div className="ml-4">
+              <span className="text-xl font-bold text-gray-900">
+                {formatPrice(property.price, property.listing_type)}
+              </span>
+            </div>
           </div>
 
-          {/* Title */}
-          <h4 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-1">
-            {property.title}
-          </h4>
-
           {/* Address */}
-          <div className="flex items-start text-gray-600 mb-3">
-            <MapPin size={16} className="mt-0.5 mr-2 flex-shrink-0" />
-            <span className="text-sm">
+          <div className="mb-4">
+            <span className="text-gray-600 text-sm">
               {getFullAddress(property)}
             </span>
           </div>
 
-          {/* Property Stats */}
-          <div className="flex items-center space-x-4 mb-3 text-gray-600">
-            <div className="flex items-center">
-              <Bed size={16} className="mr-1" />
-              <span className="text-sm">{property.bedrooms} bed</span>
-            </div>
-            <div className="flex items-center">
-              <Bath size={16} className="mr-1" />
-              <span className="text-sm">{property.bathrooms} bath</span>
-            </div>
-            <div className="flex items-center">
-              <Home size={16} className="mr-1" />
-              <span className="text-sm">{property.type}</span>
-            </div>
+          {/* Property Stats Row */}
+          <div className="flex items-center space-x-4 mb-3 text-gray-600 text-sm">
+            <span>{property.bedrooms} Beds</span>
+            <span>{property.bathrooms} Baths</span>
+            <span>{property.floor_area}m2</span>
           </div>
 
-          {/* Features */}
-          <div className="flex flex-wrap gap-1 mb-3">
-            {property.features.slice(0, 3).map((feature, index) => (
-              <span
-                key={index}
-                className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
-              >
-                {feature}
-              </span>
-            ))}
-            {property.features.length > 3 && (
-              <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-                +{property.features.length - 3} more
-              </span>
-            )}
+          {/* Property Type */}
+          <div className="mb-3">
+            <span className="text-gray-600 text-sm">{property.type}</span>
           </div>
 
-          {/* Date Added */}
-          <div className="flex items-center text-gray-500 text-sm mb-4">
-            <Calendar size={14} className="mr-1" />
-            <span>Listed {formatDate(property.created_at)}</span>
+          {/* Tenure */}
+          <div className="mb-4">
+            <span className="text-gray-600 text-sm">Freehold</span>
           </div>
 
-          {/* Action Buttons */}
-          <div>
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="w-full bg-primary-500 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition-colors font-medium"
-            >
-              View Details
-            </button>
+          {/* Listed Date */}
+          <div className="text-primary-500 text-sm font-medium text-right">
+            Listed on {new Date(property.created_at).toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            })}
           </div>
         </div>
       </div>

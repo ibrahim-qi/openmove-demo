@@ -267,7 +267,7 @@ export default function SearchBar({
             <input
               type="text"
               placeholder={placeholder}
-              className="block w-full px-6 py-4 text-lg border-none rounded-full focus:outline-none bg-transparent cursor-pointer text-center text-black font-medium placeholder-black transition-all duration-300"
+              className="block w-full px-6 py-4 text-base border-none rounded-full focus:outline-none bg-transparent cursor-pointer text-center text-gray-700 font-normal placeholder-gray-500 transition-all duration-300"
               readOnly
             />
             <div className="absolute inset-y-0 right-0 pr-2 flex items-center">
