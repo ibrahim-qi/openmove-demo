@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { MapPin, Bed, Bath, Square, Heart } from 'lucide-react'
+import Header from '@/components/Header'
+import Image from 'next/image'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -172,7 +174,7 @@ export default function ListPropertyReview() {
       const propertyData = {
         title: step1Data.title,
         type: step1Data.type,
-        price: parseFloat(step3Data.price),
+        price: parseFloat(step3Data.price.replace(/,/g, '')),
         listing_type: step1Data.listing_type,
         property_name: step1Data.property_name || null,
         address_line_1: step1Data.address_line_1,
@@ -228,7 +230,7 @@ export default function ListPropertyReview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600 mb-4">Loading your listing data...</p>
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto"></div>
         </div>
       </div>
     )
@@ -239,180 +241,121 @@ export default function ListPropertyReview() {
     currency: 'GBP',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(parseFloat(step3Data.price))
+  }).format(parseFloat(step3Data.price.replace(/,/g, '')))
 
   const fullAddress = [
-    step1Data.property_name,
     step1Data.address_line_1,
-    step1Data.address_line_2,
-    step1Data.city,
-    step1Data.postcode
+    step1Data.city
   ].filter(Boolean).join(', ')
 
+  const propertyType = step1Data.type
+  const bedroomCount = step1Data.bedrooms
+  const bathroomCount = step1Data.bathrooms
+  const floorArea = step1Data.floor_area
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      <div className="max-w-md mx-auto px-4 py-6 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <h1 className="text-xl font-bold text-gray-900 mb-4 sm:text-2xl">
             Review Your Listing
           </h1>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Property Preview */}
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-            {/* Image Gallery */}
-            <div className="relative h-64 bg-gray-200">
-              {isLoadingImages ? (
-                <div className="w-full h-full flex items-center justify-center text-gray-500">
-                  <div className="text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600 mx-auto mb-2"></div>
-                    <p>Loading images...</p>
-                  </div>
-                </div>
-              ) : imagePreviewUrls.length > 0 ? (
-                <img 
-                  src={imagePreviewUrls[0]} 
-                  alt="Property"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-500">
-                  No Image Available
-                </div>
-              )}
-              <button className="absolute top-4 right-4 p-2 rounded-full bg-white shadow-md hover:bg-gray-50">
-                <Heart className="w-5 h-5 text-gray-600" />
-              </button>
-              {step1Data.listing_type === 'sale' && (
-                <div className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  New Listing
-                </div>
-              )}
-            </div>
-
-            {/* Property Details */}
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-2xl font-bold text-gray-900">
-                  {formattedPrice}
-                </h3>
-              </div>
-              
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                {step1Data.title}
-              </h4>
-              
-              <div className="flex items-center text-gray-600 mb-4">
-                <MapPin className="w-4 h-4 mr-1" />
-                <span className="text-sm">{fullAddress}</span>
-              </div>
-              
-              <div className="flex items-center space-x-4 text-gray-600 mb-4">
-                <div className="flex items-center">
-                  <Bed className="w-4 h-4 mr-1" />
-                  <span className="text-sm">{step1Data.bedrooms} beds</span>
-                </div>
-                <div className="flex items-center">
-                  <Bath className="w-4 h-4 mr-1" />
-                  <span className="text-sm">{step1Data.bathrooms} baths</span>
-                </div>
-                <div className="flex items-center">
-                  <Square className="w-4 h-4 mr-1" />
-                  <span className="text-sm">{step1Data.floor_area} sqm</span>
+        {/* Property Preview Card */}
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-8 lg:max-w-md lg:mx-auto">
+          {/* Property Image */}
+          <div className="relative h-64 bg-gray-200 lg:h-80">
+            {isLoadingImages ? (
+              <div className="w-full h-full flex items-center justify-center text-gray-500">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto mb-2"></div>
+                  <p>Loading images...</p>
                 </div>
               </div>
-              
-              <div className="border-t pt-4">
-                <span className="text-xs text-pink-600 bg-pink-50 px-2 py-1 rounded">
-                  New Listing
-                </span>
-                <span className="text-xs text-gray-500 ml-2">Listed today</span>
+            ) : imagePreviewUrls.length > 0 ? (
+              <Image 
+                src={imagePreviewUrls[0]} 
+                alt="Property"
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-gray-500">
+                No Image Available
               </div>
-            </div>
+            )}
+            <button className="absolute top-4 right-4 p-2 rounded-full bg-white shadow-md hover:bg-gray-50">
+              <Heart className="w-5 h-5 text-gray-600" />
+            </button>
           </div>
 
-          {/* Preview Information */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <p className="text-center text-gray-600 mb-6">
-                This is a preview of how your property will appear to buyers
-              </p>
-
-              {/* Description */}
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                  Description
-                </h3>
-                <p className="text-gray-600">
-                  {step2Data.description}
-                </p>
-              </div>
-
-              {/* Features */}
-              {(step1Data.features?.length > 0 || step1Data.custom_features?.length > 0) && (
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                    Features
-                  </h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {step1Data.features?.map((feature: string, index: number) => (
-                      <div key={index} className="flex items-center text-sm">
-                        <span className="w-2 h-2 bg-pink-600 rounded-full mr-2"></span>
-                        {feature}
-                      </div>
-                    ))}
-                    {step1Data.custom_features?.map((feature: string, index: number) => (
-                      <div key={`custom-${index}`} className="flex items-center text-sm">
-                        <span className="w-2 h-2 bg-pink-600 rounded-full mr-2"></span>
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Sale Information */}
+          {/* Property Details */}
+          <div className="p-6">
+            <div className="flex items-start justify-between mb-2">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                  Sale Information
+                <h3 className="text-lg font-bold text-gray-900 leading-tight">
+                  {bedroomCount} Bedroom
                 </h3>
-                <div className="space-y-2">
-                  <div>
-                    <span className="text-sm font-medium text-gray-700">Property Tenure</span>
-                    <p className="text-sm text-gray-600">Freehold</p>
-                  </div>
-                </div>
+                <h4 className="text-lg font-bold text-gray-900 leading-tight">
+                  {propertyType}
+                </h4>
               </div>
+              <span className="text-xl font-bold text-gray-900">{formattedPrice}</span>
+            </div>
+            
+            <div className="flex items-center text-gray-600 mb-3">
+              <MapPin className="w-4 h-4 mr-1" />
+              <span className="text-sm">{fullAddress}</span>
+            </div>
+            
+            <div className="flex items-center space-x-4 text-gray-700 mb-3">
+              <span className="text-sm">{bedroomCount} Beds</span>
+              <span className="text-sm">{bathroomCount} Baths</span>
+              <span className="text-sm">{floorArea}m2</span>
             </div>
 
-            {/* Action Buttons */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex flex-col space-y-4">
-                <button
-                  onClick={handleBackToEdit}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  ← Back to Edit
-                </button>
-                
-                <button
-                  onClick={handlePublishListing}
-                  disabled={isSubmitting}
-                  className={`px-8 py-4 rounded-lg text-lg font-semibold transition-colors ${
-                    isSubmitting
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-pink-600 text-white hover:bg-pink-700'
-                  }`}
-                >
-                  {isSubmitting ? 'Publishing...' : 'Publish Listing'}
-                </button>
-              </div>
+            <div className="mb-2">
+              <span className="text-sm text-gray-900">{propertyType}</span>
+            </div>
+
+            <div className="mb-4">
+              <span className="text-sm text-gray-900">Freehold</span>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <span className="text-primary-500 text-sm">Listed on 20/07/2025</span>
             </div>
           </div>
+        </div>
+
+        {/* Preview Info */}
+        <div className="text-center mb-8">
+          <p className="text-gray-500 text-sm">
+            Click the preview to see the full listing page
+          </p>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex gap-4">
+          <button
+            onClick={handleBackToEdit}
+            className="flex-1 bg-white text-gray-700 border border-gray-300 px-6 py-4 rounded-full text-base font-semibold hover:bg-gray-50 transition-colors"
+          >
+            Back
+          </button>
+          <button
+            onClick={handlePublishListing}
+            disabled={isSubmitting}
+            className="flex-1 bg-primary-500 text-white px-6 py-4 rounded-full text-base font-semibold hover:bg-primary-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? 'Publishing...' : 'List Property'}
+          </button>
         </div>
       </div>
     </div>
   )
-} 
+}

@@ -125,8 +125,8 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Is your property section */}
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-4 text-center lg:text-xl lg:mb-6">
             Is your property...
           </h3>
           <div className="flex gap-3">
@@ -154,8 +154,8 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Property Title */}
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-4 text-center lg:text-xl lg:mb-6">
             Give your property a catchy title
           </h3>
           <input
@@ -168,8 +168,8 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Property Type */}
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-4 text-center lg:text-xl lg:mb-6">
             What type of property do you have?
           </h3>
           <div className="relative">
@@ -200,8 +200,8 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Location */}
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6 text-center">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-6 text-center lg:text-xl lg:mb-8">
             Where is your property located?
           </h3>
           
@@ -274,8 +274,8 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Space Details */}
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6 text-center">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-6 text-center lg:text-xl lg:mb-8">
             Let&apos;s talk about the space
           </h3>
           
@@ -361,15 +361,15 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Features */}
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8 lg:p-8">
+          <h3 className="text-lg font-bold text-gray-900 mb-2 text-center lg:text-xl lg:mb-4">
             What features does your property have?
           </h3>
-          <p className="text-gray-500 mb-6 text-center text-sm">
+          <p className="text-gray-500 mb-6 text-center text-sm lg:text-base lg:mb-8">
             Select all the features that apply to your property
           </p>
 
-          <div className="grid grid-cols-2 gap-3 mb-6 sm:grid-cols-3 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 mb-6 sm:grid-cols-3 md:grid-cols-4 lg:gap-4">
             {STANDARD_FEATURES.map((feature) => (
               <button
                 key={feature}
@@ -410,7 +410,7 @@ export default function ListPropertyStep1() {
 
             {/* Display custom features */}
             {formData.custom_features.length > 0 && (
-              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:gap-4">
                 {formData.custom_features.map((feature, index) => (
                   <button
                     key={index}
