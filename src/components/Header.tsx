@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Menu, X, User } from 'lucide-react';
 
@@ -8,13 +9,22 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-primary-500">
-              yoomoove
+            <Link href="/" className="flex items-center transition-opacity duration-200 hover:opacity-90">
+              <img
+                src="/header.png"
+                alt="yoomoove"
+                className="h-6 w-auto sm:h-7 md:h-8"
+                style={{ 
+                  imageRendering: 'crisp-edges'
+                }}
+                loading="eager"
+                decoding="async"
+              />
             </Link>
           </div>
 

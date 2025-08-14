@@ -2,7 +2,7 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { CheckCircle, Users, Clock, Shield, Camera, MessageSquare, PoundSterling, MapPin } from 'lucide-react';
+import Link from 'next/link';
 
 export default function AboutPage() {
   return (
@@ -10,220 +10,226 @@ export default function AboutPage() {
       <Header />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-500 to-primary-700 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-white">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-              How Openmove Works
-            </h1>
-            <p className="text-xl lg:text-2xl max-w-3xl mx-auto">
-              Revolutionary peer-to-peer property platform connecting buyers and sellers directly
-            </p>
+      <section className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4 sm:text-3xl lg:text-4xl">
+            The <span className="text-primary-500">simplest</span> way to sell<br />
+            or let your home
+          </h1>
+
+        </div>
+      </section>
+
+      {/* Steps Section */}
+      <section className="px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-4xl mx-auto">
+
+          <div className="space-y-4 lg:space-y-6">
+          
+          {/* Step 1 */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 lg:p-8 hover:shadow-md transition-shadow relative">
+            <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center lg:w-12 lg:h-12 mb-4">
+              <span className="text-white font-bold text-lg lg:text-xl">1</span>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-black mb-3 lg:text-xl">
+                List Your Property
+              </h3>
+              <p className="text-black text-sm leading-relaxed lg:text-base mb-3">
+                Upload your home details, photos and videos for just £10. No expiry, no hidden fees.
+              </p>
+              <p className="text-black text-sm leading-relaxed lg:text-base mb-6">
+                List your property in three simple steps. Start listing now!
+              </p>
+              <Link href="/list-property">
+                <button className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-full font-semibold transition-colors">
+                  List Your Property
+                </button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Step 2 */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 lg:p-8 hover:shadow-md transition-shadow relative">
+            <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center lg:w-12 lg:h-12 mb-4">
+              <span className="text-white font-bold text-lg lg:text-xl">2</span>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-black mb-3 lg:text-xl">
+                Talk Directly to Buyers or Tenants
+              </h3>
+              <p className="text-black text-sm leading-relaxed lg:text-base">
+                Talk directly to people interested in your property in real time using our secure chat. Send photos, answer questions and negotiate a price.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 lg:p-8 hover:shadow-md transition-shadow relative">
+            <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center lg:w-12 lg:h-12 mb-4">
+              <span className="text-white font-bold text-lg lg:text-xl">3</span>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-black mb-3 lg:text-xl">
+                Send and Receive Offers
+              </h3>
+              <p className="text-black text-sm leading-relaxed lg:text-base">
+                Buyers can send offers at any time, and a PDF document with the offer will be sent to your email. This will also be shown on your profile. Sellers can accept, reject or counter-offer.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 4 */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 lg:p-8 hover:shadow-md transition-shadow relative">
+            <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center lg:w-12 lg:h-12 mb-4">
+              <span className="text-white font-bold text-lg lg:text-xl">4</span>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-black mb-3 lg:text-xl">
+                Accept and Move Forward
+              </h3>
+              <p className="text-black text-sm leading-relaxed lg:text-base">
+                When you accept an offer, a Memorandum of Sale is created and sent to both the seller and the buyer. A PDF document will be generated and sent to both parties.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 5 */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 lg:p-8 hover:shadow-md transition-shadow relative">
+            <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center lg:w-12 lg:h-12 mb-4">
+              <span className="text-white font-bold text-lg lg:text-xl">5</span>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-black mb-3 lg:text-xl">
+                Your Solicitor Takes Over
+              </h3>
+              <p className="text-black text-sm leading-relaxed lg:text-base">
+                Pass the Memorandum of Sale to your chosen Solicitors who will then handle the legal side.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 6 */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 lg:p-8 hover:shadow-md transition-shadow relative">
+            <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center lg:w-12 lg:h-12 mb-4">
+              <span className="text-white font-bold text-lg lg:text-xl">6</span>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-black mb-3 lg:text-xl">
+                Completion
+              </h3>
+              <p className="text-black text-sm leading-relaxed lg:text-base mb-3">
+                When the sale completes, £500 is paid to yoomoove from the sale proceeds through your solicitor.
+              </p>
+              <p className="text-black text-sm leading-relaxed lg:text-base font-medium">
+                See the savings breakdown below!
+              </p>
+            </div>
+          </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works Steps */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Simple. Direct. Revolutionary.
+      {/* Comparison Section */}
+      <section className="px-4 sm:px-6 lg:px-8 py-8 bg-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8 lg:mb-12">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 sm:text-2xl lg:text-3xl">
+              Compare the Costs
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Skip the estate agents and connect directly with buyers. Here&apos;s how it works:
+            <p className="text-base text-gray-600 sm:text-lg lg:text-xl max-w-2xl mx-auto">
+              See how much you can save with yoomoove
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Step 1 */}
-            <div className="text-center">
-              <div className="bg-primary-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Camera className="h-8 w-8 text-primary-600" />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+            
+            {/* Estate Agent Card */}
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 lg:p-8 hover:shadow-md transition-shadow">
+              <div className="text-center mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 lg:text-xl">Estate Agent</h3>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">1. List Your Property</h3>
-              <p className="text-gray-600">
-                Upload photos, add details, and set your price. Our simple form makes listing quick and easy.
-              </p>
+              
+              <div className="space-y-4">
+                <div className="bg-gray-50 rounded-xl p-6">
+                  <div className="text-center">
+                    <p className="text-base font-semibold text-gray-700 mb-4 lg:text-lg">Sale Price: £350,000</p>
+                    <div className="border-t border-gray-300 pt-4">
+                      <p className="text-gray-600 text-sm mb-2 lg:text-base">Estate Agent Fee (1.5%):</p>
+                      <p className="text-2xl font-bold text-gray-800 lg:text-3xl">£5,250</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+                  <p className="text-red-600 font-semibold text-sm lg:text-base">You could save</p>
+                  <p className="text-xl font-bold text-red-600 lg:text-2xl">£4,740</p>
+                </div>
+              </div>
             </div>
 
-            {/* Step 2 */}
-            <div className="text-center">
-              <div className="bg-primary-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-primary-600" />
+            {/* Yoomoove Card */}
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-primary-100 lg:p-8 hover:shadow-md transition-shadow relative">
+              <div className="absolute -top-3 right-4">
+                <span className="bg-primary-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">
+                  SAVE 90%
+                </span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">2. Connect with Buyers</h3>
-              <p className="text-gray-600">
-                Interested buyers contact you directly through our secure messaging system.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="text-center">
-              <div className="bg-primary-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="h-8 w-8 text-primary-600" />
+              
+              <div className="text-center mb-6">
+                <img
+                  src="/header.png"
+                  alt="yoomoove"
+                  className="h-6 w-auto mx-auto lg:h-8"
+                  style={{
+                    imageRendering: 'crisp-edges'
+                  }}
+                />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">3. Complete the Sale</h3>
-              <p className="text-gray-600">
-                Arrange viewings, negotiate terms, and complete your sale - all without expensive agent fees.
-              </p>
+              
+              <div className="space-y-4">
+                <div className="bg-primary-50 rounded-xl p-6">
+                  <div className="text-center mb-4">
+                    <p className="text-base font-semibold text-gray-700 mb-4 lg:text-lg">Sale Price: £350,000</p>
+                  </div>
+                  
+                  <div className="space-y-3 text-sm lg:text-base">
+                    <div className="flex justify-between items-center py-2 border-b border-primary-200">
+                      <span className="text-gray-600">Listing Fee:</span>
+                      <span className="font-semibold text-gray-800">£10</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="text-gray-600">Completion Fee:</span>
+                      <span className="font-semibold text-gray-800">£500</span>
+                    </div>
+                    <div className="border-t-2 border-primary-300 pt-3">
+                      <div className="flex justify-between items-center font-bold text-base lg:text-lg">
+                        <span className="text-primary-600">Total yoomoove fee:</span>
+                        <span className="text-primary-600">£510</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-primary-50 border border-primary-300 rounded-xl p-6 text-center">
+                  <p className="text-primary-700 font-bold text-base mb-2 lg:text-lg">Total Savings</p>
+                  <p className="text-2xl font-bold text-primary-700 lg:text-3xl">£4,740</p>
+                  <p className="text-primary-600 text-sm mt-2 lg:text-base">That&apos;s 90% less in fees!</p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Key Features */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose Openmove?
-            </h2>
-            <p className="text-lg text-gray-600">
-              Everything you need to sell your property successfully
+          
+          {/* Call to Action */}
+          <div className="text-center mt-8 lg:mt-12">
+            <p className="text-base text-gray-600 mb-6 sm:text-lg lg:text-xl max-w-2xl mx-auto">
+              Ready to save thousands on your property sale?
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Feature 1 */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="bg-primary-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                <PoundSterling className="h-6 w-6 text-primary-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Save Thousands</h3>
-              <p className="text-gray-600">
-                No commission fees. Just a simple £10 listing fee.
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="bg-primary-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                <MessageSquare className="h-6 w-6 text-primary-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Direct Communication</h3>
-              <p className="text-gray-600">
-                Speak directly with buyers. No middleman delays.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="bg-primary-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                <Clock className="h-6 w-6 text-primary-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Complete Faster</h3>
-              <p className="text-gray-600">
-                Streamlined process means quicker sales completion.
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="bg-primary-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                <Shield className="h-6 w-6 text-primary-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">You&apos;re in Control</h3>
-              <p className="text-gray-600">
-                Manage your listing, pricing, and viewings your way.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* For Buyers Section */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              For Property Buyers
-            </h2>
-            <p className="text-lg text-gray-600">
-              Find your perfect home with more transparency and better prices
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <div className="bg-primary-100 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-4 w-4 text-primary-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Better Prices</h3>
-                  <p className="text-gray-600">
-                    Sellers save on agent fees, meaning better prices for you.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="bg-primary-100 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
-                  <MessageSquare className="h-4 w-4 text-primary-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Direct Access</h3>
-                  <p className="text-gray-600">
-                    Speak directly with property owners. Get honest answers.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="bg-primary-100 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
-                  <Clock className="h-4 w-4 text-primary-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Faster Process</h3>
-                  <p className="text-gray-600">
-                    No agent delays. Arrange viewings and make offers quickly.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="bg-primary-100 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
-                  <Shield className="h-4 w-4 text-primary-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">More Transparency</h3>
-                  <p className="text-gray-600">
-                    Get the full story directly from the seller, not through an agent.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-r from-primary-500 to-primary-700 text-white p-8 rounded-lg">
-              <h3 className="text-2xl font-bold mb-4">Start Browsing Today</h3>
-              <p className="text-white/90 mb-6">
-                Thousands of properties listed by owners just like you. No agent markup, no hidden fees.
-              </p>
-              <button className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Browse Properties
+            <Link href="/list-property">
+              <button className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-full font-semibold transition-colors">
+                Start Saving Today - List for £10
               </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-primary-500">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-            Ready to Try a Better Way?
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Join thousands of homeowners who have saved money by selling directly
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="bg-white text-primary-500 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg">
-              List Your Property - £10
-            </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-primary-500 transition-colors font-semibold text-lg">
-              Browse Properties
-            </button>
+            </Link>
           </div>
         </div>
       </section>
