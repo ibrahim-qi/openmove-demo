@@ -266,7 +266,7 @@ export default function ListPropertyReview() {
         </div>
 
         {/* Property Preview Card */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-8 lg:max-w-md lg:mx-auto">
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-8 lg:max-w-md lg:mx-auto">
           {/* Property Image */}
           <div className="relative h-64 bg-gray-200 lg:h-80">
             {isLoadingImages ? (
@@ -343,14 +343,14 @@ export default function ListPropertyReview() {
         <div className="flex gap-4">
           <button
             onClick={handleBackToEdit}
-            className="flex-1 bg-white text-gray-700 border border-gray-300 px-6 py-4 rounded-full text-base font-semibold hover:bg-gray-50 transition-colors"
+            className="flex-1 bg-white text-gray-700 border border-gray-300 px-4 py-2.5 rounded-2xl text-sm font-semibold hover:bg-gray-50 transition-colors"
           >
             Back
           </button>
           <button
             onClick={handlePublishListing}
             disabled={isSubmitting}
-            className="flex-1 bg-primary-500 text-white px-6 py-4 rounded-full text-base font-semibold hover:bg-primary-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="flex-1 bg-primary-500 text-white px-4 py-2.5 rounded-2xl text-sm font-semibold hover:bg-primary-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             {isSubmitting ? 'Publishing...' : 'List Property'}
           </button>

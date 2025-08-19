@@ -181,7 +181,7 @@ function SuccessContent() {
         <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <button
             onClick={handleShareProperty}
-            className="flex items-center px-6 py-3 border border-pink-600 text-pink-600 rounded-lg hover:bg-pink-50 transition-colors"
+            className="flex items-center px-4 py-2.5 border border-primary-500 text-primary-500 rounded-2xl text-sm font-semibold hover:bg-primary-50 transition-colors"
           >
             <Share className="w-5 h-5 mr-2" />
             Share Property
@@ -189,14 +189,14 @@ function SuccessContent() {
           
           <Link
             href="/"
-            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+            className="px-4 py-2.5 bg-gray-200 text-gray-700 rounded-2xl text-sm font-semibold hover:bg-gray-300 transition-colors"
           >
             Back to Home
           </Link>
           
           <Link
             href={`/property/${property.id}`}
-            className="px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors"
+            className="px-4 py-2.5 bg-primary-500 text-white rounded-2xl text-sm font-semibold hover:bg-primary-600 transition-colors"
           >
             Go to Listing
           </Link>

@@ -16,7 +16,7 @@ export default function PrivacyPolicy() {
           </div>
 
           {/* Content */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 lg:p-8">
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 lg:p-8">
             <div className="space-y-6 text-black text-sm leading-relaxed lg:text-base">
               
               <p>

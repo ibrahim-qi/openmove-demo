@@ -105,27 +105,35 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Header />
       
       {/* Search Section */}
-      <section className="bg-gray-50 py-8">
+      <section className="bg-white py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto mb-6">
+          <div className="max-w-sm sm:max-w-md mx-auto mb-12">
             <SearchBar 
               onSearch={handleSearch}
               placeholder="Search properties"
             />
           </div>
           
-          {/* List Your Property Button - Centered */}
+          {/* List Your Property Button and How It Works Button - Centered */}
           <div className="text-center">
-            <Link 
-              href="/list-property"
-              className="bg-gradient-to-r from-primary-500 to-primary-700 text-white px-10 py-3.5 rounded-full font-semibold text-base hover:from-primary-600 hover:to-primary-800 transition-all duration-200 shadow-lg inline-block lg:px-12 lg:py-4 lg:text-lg"
-            >
-              List Your Property
-            </Link>
+            <div className="flex flex-row items-center justify-center gap-6">
+              <Link 
+                href="/list-property"
+                className="bg-primary-500 text-white px-4 py-3 rounded-2xl font-semibold text-base hover:bg-primary-600 transition-all duration-200 shadow-lg inline-block"
+              >
+                List Your Property
+              </Link>
+              <Link 
+                href="/about"
+                className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-3 rounded-2xl font-bold text-base transition-all duration-200 inline-block"
+              >
+                How it works
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -134,7 +142,7 @@ export default function Home() {
       <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="mb-6 px-4">
-            <h2 className="text-xl font-bold text-gray-900">Saved Properties</h2>
+            <h2 className="text-2xl font-bold text-black">Saved Properties</h2>
           </div>
 
           {savedProperties.length === 0 ? (
@@ -157,10 +165,10 @@ export default function Home() {
       </section>
 
       {/* Recently Viewed Properties */}
-      <section className="py-8 bg-gray-50">
+      <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="mb-6 px-4">
-            <h2 className="text-xl font-bold text-gray-900">Recently Viewed</h2>
+            <h2 className="text-2xl font-bold text-black">Recently Viewed</h2>
           </div>
 
           {recentlyViewedProperties.length === 0 ? (

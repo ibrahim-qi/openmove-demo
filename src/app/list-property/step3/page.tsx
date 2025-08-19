@@ -47,7 +47,7 @@ export default function ListPropertyStep3() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Header />
       
       <div className="max-w-md mx-auto px-4 py-6 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
@@ -58,35 +58,35 @@ export default function ListPropertyStep3() {
           </h1>
           
           {/* Progress indicators */}
-          <div className="flex items-center justify-center space-x-2 sm:space-x-4 mb-8">
+          <div className="flex items-center justify-center space-x-6 sm:space-x-8 mb-8">
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center sm:w-8 sm:h-8">
-                <span className="text-white font-semibold text-xs sm:text-sm">1</span>
+              <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center sm:w-6 sm:h-6">
+                <span className="text-white font-semibold text-xs">1</span>
               </div>
-              <span className="ml-2 text-sm font-medium text-primary-500 sm:text-base">Property Details</span>
+              <span className="ml-2 text-sm font-medium text-black sm:text-base">Property Details</span>
             </div>
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center sm:w-8 sm:h-8">
-                <span className="text-white font-semibold text-xs sm:text-sm">2</span>
+              <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center sm:w-6 sm:h-6">
+                <span className="text-white font-semibold text-xs">2</span>
               </div>
-              <span className="ml-2 text-sm font-medium text-primary-500 sm:text-base">Photos</span>
+              <span className="ml-2 text-sm font-medium text-black sm:text-base">Photos</span>
             </div>
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center sm:w-8 sm:h-8">
-                <span className="text-white font-semibold text-xs sm:text-sm">3</span>
+              <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center sm:w-6 sm:h-6">
+                <span className="text-white font-semibold text-xs">3</span>
               </div>
-              <span className="ml-2 text-sm font-medium text-primary-500 sm:text-base">Set Your Price</span>
+              <span className="ml-2 text-sm font-medium text-black sm:text-base">Set Your Price</span>
             </div>
           </div>
         </div>
 
         {/* Pricing Section */}
-        <div className="mb-12">
-          <h2 className="text-lg font-bold text-gray-900 mb-8 text-center">
-            Choose an asking price
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-6 lg:p-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-6 text-center lg:text-xl lg:mb-8">
+            Set your asking price
           </h2>
 
-          <div className="mb-8">
+          <div className="mb-6">
             <div className="relative">
               <span className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-900 text-xl font-semibold">
                 £
@@ -96,7 +96,7 @@ export default function ListPropertyStep3() {
                 placeholder="400,000"
                 value={formData.price}
                 onChange={handlePriceChange}
-                className="w-full pl-12 pr-6 py-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-xl font-semibold text-center text-gray-900 bg-white"
+                className="w-full pl-12 pr-6 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 text-xl font-semibold text-center text-gray-900 bg-white"
               />
             </div>
           </div>
@@ -106,14 +106,14 @@ export default function ListPropertyStep3() {
         <div className="flex gap-4 pt-8">
           <button
             onClick={handleBack}
-            className="flex-1 bg-white text-gray-700 border border-gray-300 px-6 py-4 rounded-full text-base font-semibold hover:bg-gray-50 transition-colors"
+            className="flex-1 bg-white text-gray-700 border border-gray-300 px-4 py-2.5 rounded-2xl text-sm font-semibold hover:bg-gray-50 transition-colors"
           >
             Back
           </button>
           <button
             onClick={handlePreviewListing}
             disabled={!isFormValid()}
-            className="flex-1 bg-primary-500 text-white px-6 py-4 rounded-full text-base font-semibold hover:bg-primary-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="flex-1 bg-primary-500 text-white px-4 py-2.5 rounded-2xl text-sm font-semibold hover:bg-primary-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             Preview Listing
           </button>

@@ -40,9 +40,9 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
 
   return (
     <>
-      <div className={`bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden w-full ${className}`}>
+      <div className={`bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden w-full ${className}`}>
         {/* Property Image */}
-        <div className="relative h-48 md:h-56 w-full">
+        <div className="relative h-72 md:h-80 w-full">
           {property.images && property.images.length > 0 && !property.images[0].includes('example.com') ? (
             <Image
               src={property.images[0]}
@@ -89,27 +89,27 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
           {/* Title and Price */}
           <div className="flex justify-between items-start mb-3">
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+              <h3 className="text-xl font-bold text-black leading-tight">
                 {property.bedrooms} Bedroom<br />
                 {property.type} Home
               </h3>
             </div>
             <div className="ml-4">
-              <span className="text-xl font-bold text-gray-900">
+              <span className="text-xl font-bold text-black">
                 {formatPrice(property.price, property.listing_type)}
               </span>
             </div>
           </div>
 
           {/* Address */}
-          <div className="mb-4">
-            <span className="text-gray-600 text-sm">
+          <div className="mb-3">
+            <span className="text-black text-sm">
               {getFullAddress(property)}
             </span>
           </div>
 
           {/* Property Stats Row */}
-          <div className="flex items-center space-x-4 mb-3 text-gray-600 text-sm">
+          <div className="flex items-center space-x-4 mb-3 text-black text-sm">
             <span>{property.bedrooms} Beds</span>
             <span>{property.bathrooms} Baths</span>
             <span>{property.floor_area}m2</span>
@@ -117,12 +117,12 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
 
           {/* Property Type */}
           <div className="mb-3">
-            <span className="text-gray-600 text-sm">{property.type}</span>
+            <span className="text-black text-sm">{property.type}</span>
           </div>
 
           {/* Tenure */}
-          <div className="mb-4">
-            <span className="text-gray-600 text-sm">Freehold</span>
+          <div className="mb-3">
+            <span className="text-black text-sm">Freehold</span>
           </div>
 
           {/* Listed Date */}

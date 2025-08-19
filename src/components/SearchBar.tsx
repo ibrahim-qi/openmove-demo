@@ -267,12 +267,12 @@ export default function SearchBar({
             <input
               type="text"
               placeholder={placeholder}
-              className="block w-full px-6 py-4 text-base border-none rounded-full focus:outline-none bg-transparent cursor-pointer text-center text-gray-700 font-normal placeholder-gray-500 transition-all duration-300"
+              className="block w-full px-6 py-4 text-[15px] border-none rounded-full focus:outline-none bg-transparent cursor-pointer text-center text-gray-700 font-normal placeholder-gray-700 transition-all duration-300"
               readOnly
             />
-            <div className="absolute inset-y-0 right-0 pr-2 flex items-center">
-              <button className="bg-primary-500 text-white p-3 rounded-full hover:bg-primary-600 transition-all duration-200">
-                <Search className="h-5 w-5" />
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <button className="bg-primary-500 text-white w-8 h-8 rounded-full hover:bg-primary-600 transition-all duration-200 flex items-center justify-center">
+                <Search className="h-4 w-4 stroke-[3]" />
               </button>
             </div>
           </div>
@@ -509,9 +509,9 @@ export default function SearchBar({
             </button>
             <button
               onClick={handleSearch}
-              className="bg-primary-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-600 transition-colors flex items-center text-sm"
+              className="bg-primary-500 text-white px-4 py-2.5 rounded-2xl text-sm font-semibold hover:bg-primary-600 transition-colors flex items-center"
             >
-              <Search className="h-5 w-5 mr-2" />
+              <Search className="h-5 w-5 mr-2 stroke-2" />
               Search
             </button>
           </div>

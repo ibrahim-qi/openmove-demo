@@ -220,7 +220,7 @@ export default function ListPropertyStep2() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Header />
       
       <div className="max-w-md mx-auto px-4 py-6 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
@@ -231,22 +231,22 @@ export default function ListPropertyStep2() {
           </h1>
           
           {/* Progress indicators */}
-          <div className="flex items-center justify-center space-x-2 sm:space-x-4 mb-8">
+          <div className="flex items-center justify-center space-x-6 sm:space-x-8 mb-8">
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center sm:w-8 sm:h-8">
-                <span className="text-white font-semibold text-xs sm:text-sm">1</span>
+              <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center sm:w-6 sm:h-6">
+                <span className="text-white font-semibold text-xs">1</span>
               </div>
-              <span className="ml-2 text-sm font-medium text-primary-500 sm:text-base">Property Details</span>
+              <span className="ml-2 text-sm font-medium text-black sm:text-base">Property Details</span>
             </div>
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center sm:w-8 sm:h-8">
-                <span className="text-white font-semibold text-xs sm:text-sm">2</span>
+              <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center sm:w-6 sm:h-6">
+                <span className="text-white font-semibold text-xs">2</span>
               </div>
-              <span className="ml-2 text-sm font-medium text-primary-500 sm:text-base">Photos</span>
+              <span className="ml-2 text-sm font-medium text-black sm:text-base">Photos</span>
             </div>
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center sm:w-8 sm:h-8">
-                <span className="text-gray-600 font-semibold text-xs sm:text-sm">3</span>
+              <div className="w-5 h-5 bg-gray-300 rounded-full flex items-center justify-center sm:w-6 sm:h-6">
+                <span className="text-gray-600 font-semibold text-xs">3</span>
               </div>
               <span className="ml-2 text-sm text-gray-500 sm:text-base">Set Your Price</span>
             </div>
@@ -254,7 +254,7 @@ export default function ListPropertyStep2() {
         </div>
 
         {/* Upload Photos Section */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-6 lg:p-8">
           <h2 className="text-lg font-bold text-gray-900 mb-2 text-center lg:text-xl lg:mb-3">
             Upload your property photos
           </h2>
@@ -272,7 +272,7 @@ export default function ListPropertyStep2() {
                 onChange={handleImageUpload}
                 className="hidden"
               />
-              <div className="bg-primary-500 text-white px-6 py-3 rounded-full text-center font-semibold cursor-pointer hover:bg-primary-600 transition-colors flex items-center justify-center lg:px-8 lg:py-4 lg:text-lg">
+              <div className="bg-primary-500 text-white px-4 py-2.5 rounded-2xl text-center text-sm font-semibold cursor-pointer hover:bg-primary-600 transition-colors flex items-center justify-center">
                 <Camera className="w-5 h-5 mr-2 lg:w-6 lg:h-6" />
                 Upload Photos
               </div>
@@ -291,40 +291,41 @@ export default function ListPropertyStep2() {
                 />
                 <button
                   onClick={() => removeImage(index)}
-                  className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-sm hover:bg-red-600 lg:w-8 lg:h-8 lg:text-base"
+                  className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-2xl flex items-center justify-center text-sm hover:bg-red-600 lg:w-8 lg:h-8 lg:text-base"
                 >
                   ×
                 </button>
               </div>
             ))}
             
-            {/* Empty slots */}
-            {Array.from({ length: Math.max(0, 4 - formData.imagePreviewUrls.length) }).map((_, index) => (
+            {/* Always show Add More button */}
+            <div className="aspect-square bg-white rounded-2xl border border-gray-300 flex flex-col items-center justify-center">
+              <label className="cursor-pointer w-full h-full flex flex-col items-center justify-center">
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                <div className="text-4xl text-black mb-2 lg:text-5xl">+</div>
+                <span className="text-black text-sm font-medium lg:text-base">Add more</span>
+              </label>
+            </div>
+            
+            {/* Empty slots for visual spacing when needed */}
+            {Array.from({ length: Math.max(0, 3 - formData.imagePreviewUrls.length) }).map((_, index) => (
               <div key={`empty-${index}`} className="aspect-square bg-white rounded-2xl border border-gray-300 flex flex-col items-center justify-center">
-                {index === 3 && formData.imagePreviewUrls.length >= 3 ? (
-                  <label className="cursor-pointer w-full h-full flex flex-col items-center justify-center">
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                    <div className="text-4xl text-gray-400 mb-2 lg:text-5xl">+</div>
-                    <span className="text-gray-400 text-sm font-medium lg:text-base">Add more</span>
-                  </label>
-                ) : (
-                  <div className="flex flex-col items-center justify-center">
-                    <div className="text-4xl text-gray-300 mb-2 lg:text-5xl">+</div>
-                  </div>
-                )}
+                <div className="flex flex-col items-center justify-center">
+                  <div className="text-4xl text-gray-300 mb-2 lg:text-5xl">+</div>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Floor Plan Section */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-6 lg:p-8">
           <h2 className="text-lg font-bold text-gray-900 mb-4 text-center lg:text-xl lg:mb-6">
             Upload floor plan
           </h2>
@@ -337,7 +338,7 @@ export default function ListPropertyStep2() {
                 onChange={handleFloorPlanUpload}
                 className="hidden"
               />
-              <div className="bg-primary-500 text-white px-6 py-3 rounded-full text-center font-semibold cursor-pointer hover:bg-primary-600 transition-colors flex items-center justify-center">
+              <div className="bg-primary-500 text-white px-4 py-2.5 rounded-2xl text-center text-sm font-semibold cursor-pointer hover:bg-primary-600 transition-colors flex items-center justify-center">
                 <Upload className="w-5 h-5 mr-2" />
                 Upload Floor Plan
               </div>
@@ -361,7 +362,7 @@ export default function ListPropertyStep2() {
         </div>
 
         {/* Property Description */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8 lg:p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-8 lg:p-8">
           <h2 className="text-lg font-bold text-gray-900 mb-4 text-center lg:text-xl lg:mb-6">
             Property description
           </h2>
@@ -370,7 +371,7 @@ export default function ListPropertyStep2() {
             placeholder="Describe your property's best features, location benefits, recent improvements ..."
             value={formData.description}
             onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none h-32"
+            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 resize-none h-32"
             rows={6}
           />
         </div>
@@ -379,14 +380,14 @@ export default function ListPropertyStep2() {
         <div className="flex gap-4 pt-8">
           <button
             onClick={() => window.history.back()}
-            className="flex-1 bg-white text-gray-700 border border-gray-300 px-6 py-4 rounded-full text-base font-semibold hover:bg-gray-50 transition-colors"
+            className="flex-1 bg-white text-gray-700 border border-gray-300 px-4 py-2.5 rounded-2xl text-sm font-semibold hover:bg-gray-50 transition-colors"
           >
             Back
           </button>
           <button
             onClick={handleContinue}
             disabled={!isFormValid()}
-            className="flex-1 bg-primary-500 text-white px-6 py-4 rounded-full text-base font-semibold hover:bg-primary-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="flex-1 bg-primary-500 text-white px-4 py-2.5 rounded-2xl text-sm font-semibold hover:bg-primary-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             Continue to Pricing
           </button>

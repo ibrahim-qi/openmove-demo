@@ -91,7 +91,7 @@ export default function ListPropertyStep1() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Header />
       
       <div className="max-w-md mx-auto px-4 py-6 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
@@ -102,22 +102,22 @@ export default function ListPropertyStep1() {
           </h1>
           
           {/* Progress indicators */}
-          <div className="flex items-center justify-center space-x-2 sm:space-x-4 mb-8">
+          <div className="flex items-center justify-center space-x-6 sm:space-x-8 mb-8">
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center sm:w-8 sm:h-8">
-                <span className="text-white font-semibold text-xs sm:text-sm">1</span>
+              <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center sm:w-6 sm:h-6">
+                <span className="text-white font-semibold text-xs">1</span>
               </div>
-              <span className="ml-2 text-sm font-medium text-primary-500 sm:text-base">Property Details</span>
+              <span className="ml-2 text-sm font-medium text-black sm:text-base">Property Details</span>
             </div>
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center sm:w-8 sm:h-8">
-                <span className="text-gray-600 font-semibold text-xs sm:text-sm">2</span>
+              <div className="w-5 h-5 bg-gray-300 rounded-full flex items-center justify-center sm:w-6 sm:h-6">
+                <span className="text-gray-600 font-semibold text-xs">2</span>
               </div>
               <span className="ml-2 text-sm text-gray-500 sm:text-base">Photos</span>
             </div>
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center sm:w-8 sm:h-8">
-                <span className="text-gray-600 font-semibold text-xs sm:text-sm">3</span>
+              <div className="w-5 h-5 bg-gray-300 rounded-full flex items-center justify-center sm:w-6 sm:h-6">
+                <span className="text-gray-600 font-semibold text-xs">3</span>
               </div>
               <span className="ml-2 text-sm text-gray-500 sm:text-base">Set Your Price</span>
             </div>
@@ -125,14 +125,14 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Is your property section */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-6 lg:p-8">
           <h3 className="text-lg font-bold text-gray-900 mb-4 text-center lg:text-xl lg:mb-6">
             Is your property...
           </h3>
           <div className="flex gap-3">
             <button
               onClick={() => setFormData(prev => ({ ...prev, listing_type: 'sale' }))}
-              className={`px-6 py-3 rounded-full font-semibold transition-colors flex-1 ${
+              className={`px-6 py-3 rounded-2xl font-semibold transition-colors flex-1 ${
                 formData.listing_type === 'sale'
                   ? 'bg-primary-500 text-white'
                   : 'bg-white text-gray-700 border border-gray-300'
@@ -142,7 +142,7 @@ export default function ListPropertyStep1() {
             </button>
             <button
               onClick={() => setFormData(prev => ({ ...prev, listing_type: 'rent' }))}
-              className={`px-6 py-3 rounded-full font-semibold transition-colors flex-1 ${
+              className={`px-6 py-3 rounded-2xl font-semibold transition-colors flex-1 ${
                 formData.listing_type === 'rent'
                   ? 'bg-primary-500 text-white'
                   : 'bg-white text-gray-700 border border-gray-300'
@@ -154,7 +154,7 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Property Title */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-6 lg:p-8">
           <h3 className="text-lg font-bold text-gray-900 mb-4 text-center lg:text-xl lg:mb-6">
             Give your property a catchy title
           </h3>
@@ -163,19 +163,19 @@ export default function ListPropertyStep1() {
             placeholder="e.g Stunning 3-Bedroom Cottage"
             value={formData.title}
             onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-            className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-gray-600"
+            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 text-center text-gray-600"
           />
         </div>
 
         {/* Property Type */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-6 lg:p-8">
           <h3 className="text-lg font-bold text-gray-900 mb-4 text-center lg:text-xl lg:mb-6">
             What type of property do you have?
           </h3>
           <div className="relative">
             <button
               onClick={() => setShowPropertyTypes(!showPropertyTypes)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-full bg-white text-center flex items-center justify-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-2xl bg-white text-center flex items-center justify-center focus:outline-none focus:border-primary-500 text-gray-500"
             >
               <span>{formData.type || 'Choose your property type'}</span>
               <ChevronDown className="w-4 h-4 ml-2" />
@@ -200,7 +200,7 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Location */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-6 lg:p-8">
           <h3 className="text-lg font-bold text-gray-900 mb-6 text-center lg:text-xl lg:mb-8">
             Where is your property located?
           </h3>
@@ -215,7 +215,7 @@ export default function ListPropertyStep1() {
                 placeholder="e.g 10, Rose Cottage or Apartment 5B"
                 value={formData.property_name}
                 onChange={(e) => setFormData(prev => ({ ...prev, property_name: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-gray-600"
+                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 text-center text-gray-600"
               />
             </div>
 
@@ -228,7 +228,7 @@ export default function ListPropertyStep1() {
                 placeholder="e.g. Downing Street"
                 value={formData.address_line_1}
                 onChange={(e) => setFormData(prev => ({ ...prev, address_line_1: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-gray-600"
+                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 text-center text-gray-600"
               />
             </div>
 
@@ -241,7 +241,7 @@ export default function ListPropertyStep1() {
                 placeholder="e.g. Broadway"
                 value={formData.address_line_2}
                 onChange={(e) => setFormData(prev => ({ ...prev, address_line_2: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-gray-600"
+                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 text-center text-gray-600"
               />
             </div>
 
@@ -254,7 +254,7 @@ export default function ListPropertyStep1() {
                 placeholder="e.g. London"
                 value={formData.city}
                 onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-gray-600"
+                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 text-center text-gray-600"
               />
             </div>
 
@@ -267,14 +267,14 @@ export default function ListPropertyStep1() {
                 placeholder="e.g. SW1A 2AA"
                 value={formData.postcode}
                 onChange={(e) => setFormData(prev => ({ ...prev, postcode: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-gray-600"
+                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 text-center text-gray-600"
               />
             </div>
           </div>
         </div>
 
         {/* Space Details */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 lg:p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-6 lg:p-8">
           <h3 className="text-lg font-bold text-gray-900 mb-6 text-center lg:text-xl lg:mb-8">
             Let&apos;s talk about the space
           </h3>
@@ -287,7 +287,7 @@ export default function ListPropertyStep1() {
               <div className="relative">
                 <button
                   onClick={() => setShowBedrooms(!showBedrooms)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-full bg-white text-center flex items-center justify-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl bg-white text-center flex items-center justify-center focus:outline-none focus:border-primary-500 text-gray-500"
                 >
                   <span>{formData.bedrooms || 'Choose bedrooms'}</span>
                   <ChevronDown className="w-4 h-4 ml-2" />
@@ -318,7 +318,7 @@ export default function ListPropertyStep1() {
               <div className="relative">
                 <button
                   onClick={() => setShowBathrooms(!showBathrooms)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-full bg-white text-center flex items-center justify-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-gray-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl bg-white text-center flex items-center justify-center focus:outline-none focus:border-primary-500 text-gray-500"
                 >
                   <span>{formData.bathrooms || 'Choose bathrooms'}</span>
                   <ChevronDown className="w-4 h-4 ml-2" />
@@ -351,7 +351,7 @@ export default function ListPropertyStep1() {
                 placeholder="e.g. 100"
                 value={formData.floor_area}
                 onChange={(e) => setFormData(prev => ({ ...prev, floor_area: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-gray-600"
+                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 text-center text-gray-600"
               />
               <p className="text-xs text-gray-500 mt-2 text-center">
                 Try and be as accurate as you can
@@ -361,7 +361,7 @@ export default function ListPropertyStep1() {
         </div>
 
         {/* Features */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8 lg:p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 mb-8 lg:p-8">
           <h3 className="text-lg font-bold text-gray-900 mb-2 text-center lg:text-xl lg:mb-4">
             What features does your property have?
           </h3>
@@ -374,7 +374,7 @@ export default function ListPropertyStep1() {
               <button
                 key={feature}
                 onClick={() => handleFeatureToggle(feature)}
-                className={`px-4 py-3 rounded-full border text-sm font-medium transition-colors ${
+                className={`px-4 py-3 rounded-2xl border text-sm font-medium transition-colors ${
                   formData.features.includes(feature)
                     ? 'bg-primary-500 text-white border-primary-500'
                     : 'bg-white text-gray-700 border-gray-300'
@@ -396,13 +396,13 @@ export default function ListPropertyStep1() {
                 placeholder="e.g. South facing garden"
                 value={formData.custom_feature_input}
                 onChange={(e) => setFormData(prev => ({ ...prev, custom_feature_input: e.target.value }))}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-gray-600"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-500 text-center text-gray-600"
                 onKeyPress={(e) => e.key === 'Enter' && handleAddCustomFeature()}
               />
               <button
                 onClick={handleAddCustomFeature}
                 disabled={!formData.custom_feature_input.trim()}
-                className="px-6 py-3 bg-primary-500 text-white rounded-full font-semibold hover:bg-primary-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                className="px-3 py-2 bg-primary-500 text-white rounded-2xl font-semibold hover:bg-primary-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors text-sm"
               >
                 Add feature
               </button>
@@ -415,7 +415,7 @@ export default function ListPropertyStep1() {
                   <button
                     key={index}
                     onClick={() => handleRemoveCustomFeature(index)}
-                    className="px-4 py-3 rounded-full border bg-primary-500 text-white border-primary-500 text-sm font-medium flex items-center justify-center"
+                    className="px-4 py-3 rounded-2xl border bg-primary-500 text-white border-primary-500 text-sm font-medium flex items-center justify-center"
                   >
                     {feature}
                     <span className="ml-2">×</span>
@@ -430,14 +430,14 @@ export default function ListPropertyStep1() {
         <div className="flex gap-4 pt-8">
           <button
             onClick={() => window.history.back()}
-            className="flex-1 bg-white text-gray-700 border border-gray-300 px-6 py-4 rounded-full text-base font-semibold hover:bg-gray-50 transition-colors"
+            className="flex-1 bg-white text-gray-700 border border-gray-300 px-4 py-2.5 rounded-2xl text-sm font-semibold hover:bg-gray-50 transition-colors"
           >
             Back
           </button>
           <button
             onClick={handleContinue}
             disabled={!isFormValid()}
-            className="flex-1 bg-primary-500 text-white px-6 py-4 rounded-full text-base font-semibold hover:bg-primary-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="flex-1 bg-primary-500 text-white px-4 py-2.5 rounded-2xl text-sm font-semibold hover:bg-primary-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             Continue to Photos
           </button>
